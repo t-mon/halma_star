@@ -9,6 +9,110 @@ Field *SearchAlgorithm::getStartField(){
 }
 
 
+void SearchAlgorithm::startHeuristicsCircular(){
+
+    for(unsigned int i = 0; i < NodeList.size(); i++){
+        delete NodeList[i];
+    }
+    NodeList.clear();
+ {
+    Iterator iterator(gameBoard);
+    iterator.resetToFirst();
+    while(iterator.current->number < 121){
+        iterator.current->h=0;
+        ++iterator;
+    }
+ }
+    if(DEBUG_HEURISTIC)
+        cout << "inizialize the nodeList and stoneList ... OK" << endl;
+
+    NodeList.push_back(goal);
+
+    goal->h = 0;
+    // Set goalField to the NodeList
+
+
+    setHeuristicsCircular2(NodeList.front());
+
+}
+
+bool SearchAlgorithm::setHeuristicsCircular2(Field* currentField){
+
+    // Wenn kein Weg mehr moeglich ist dann return true
+    setNeighbourHeuristic(currentField);
+
+    if(currentField == NodeList.back()){
+        return true;
+    }
+    // Nachbarn in die NodeList hinzufügen
+    // NodeList.push_back
+    Field* nextField;
+    // gehe +1 in der NodeList und rufen setHeuristicsCircular(aktuelles Feld in nodeList) auf
+
+    for(vector<Field*>::iterator listIterator = NodeList.begin(); listIterator != NodeList.end(); ++listIterator){
+        if(currentField == *listIterator){
+            ++listIterator;
+            nextField = *listIterator;
+            break;
+        }
+    }
+    if(DEBUG_HEURISTIC) print();
+    setHeuristicsCircular2(nextField);
+    return true;
+}
+
+void SearchAlgorithm::setNeighbourHeuristic(Field* currentField){
+
+    if(DEBUG_HEURISTIC)
+        cout << currentField->number << ": ";
+
+    vector<Field*>::iterator Sit = find(NodeList.begin(), NodeList.end(), currentField->dir_0);
+
+    if(currentField->dir_0 != 0 && *Sit != currentField->dir_0){
+        NodeList.push_back(currentField->dir_0);
+        currentField->dir_0->h = currentField->h + 1;
+       if(DEBUG_HEURISTIC) cout << currentField->dir_0->number << ", ";
+    }
+
+    Sit = find(NodeList.begin(), NodeList.end(), currentField->dir_60);
+    if(currentField->dir_60 != 0 && *Sit != currentField->dir_60){
+        NodeList.push_back(currentField->dir_60);
+        currentField->dir_60->h = currentField->h + 1;
+       if(DEBUG_HEURISTIC) cout << currentField->dir_60->number << ", ";
+    }
+
+    Sit = find(NodeList.begin(), NodeList.end(), currentField->dir_120);
+    if(currentField->dir_120 != 0 && *Sit != currentField->dir_120){
+            NodeList.push_back(currentField->dir_120);
+            currentField->dir_120->h = currentField->h + 1;
+    if(DEBUG_HEURISTIC) cout << currentField->dir_120->number << ", ";
+    }
+
+    Sit = find(NodeList.begin(), NodeList.end(), currentField->dir_180);
+    if(currentField->dir_180 != 0 && *Sit != currentField->dir_180){
+            NodeList.push_back(currentField->dir_180);
+            currentField->dir_180->h = currentField->h + 1;
+    if(DEBUG_HEURISTIC) cout << currentField->dir_180->number << ", ";
+    }
+    Sit = find(NodeList.begin(), NodeList.end(), currentField->dir_240);
+    if(currentField->dir_240 != 0 && *Sit != currentField->dir_240){
+            NodeList.push_back(currentField->dir_240);
+            currentField->dir_240->h = currentField->h + 1;
+       if(DEBUG_HEURISTIC)  cout << currentField->dir_240->number << ", ";
+    }
+
+    Sit = find(NodeList.begin(), NodeList.end(), currentField->dir_300);
+    if(currentField->dir_300 != 0 && *Sit != currentField->dir_300){
+            NodeList.push_back(currentField->dir_300);
+            currentField->dir_300->h = currentField->h + 1;
+       if(DEBUG_HEURISTIC)  cout << currentField->dir_300->number;
+
+    }
+
+    if(DEBUG_HEURISTIC) cout << endl;
+}
+
+
 /*
   Methode: setHeuristicsCircular
   Arguments: (Field*) goalField

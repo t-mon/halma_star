@@ -8,7 +8,7 @@ using namespace std;
 
 int main(){
 
-    FileParser phareser("Graph.txt");
+    FileParser phareser("/Users/benutzer/Documents/Programmieren/halma_star/Graph.txt");
     Board gameBoard = phareser.pharse();
 
     Iterator gameIterator(gameBoard);
@@ -82,7 +82,7 @@ int main(){
 //    }
 
     SearchAlgorithm suche(gameBoard,startFieldIterator.getCurrentField(),goalFieldIterator.getCurrentField());
-    suche.setHeuristicsCircular();
+    suche.startHeuristicsCircular();
     cout << "Current goalfield = " << goalFieldIterator.getCurrentNumber() << endl;
     suche.print();
     suche.findPath();

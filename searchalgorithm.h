@@ -27,6 +27,9 @@
 #include "iterator.h"
 #include "field.h"
 #include <vector>
+#include <algorithm>
+
+#define DEBUG_HEURISTIC 1
 
 using namespace std;
 
@@ -45,6 +48,10 @@ public:
     void setHeuristicsGeometrical();
     // calculates the heuristic with circles starting by the goal field
     void setHeuristicsCircular();
+
+    void startHeuristicsCircular();
+    bool setHeuristicsCircular2(Field* currentField);
+    void setNeighbourHeuristic(Field* currentField);
 
     // inizialize start an goal fields
     void setStartAndGoal();
@@ -78,6 +85,7 @@ private:
     vector <Field*> visitedList;
     vector <Field*> shortestPath;
 
+    vector <Field*> NodeList; // List for heuristic
 };
 
 #endif // SEARCHALGORITHM_H

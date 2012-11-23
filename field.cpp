@@ -1,6 +1,15 @@
 #include "field.h"
 
 // ****************************************************************************************************
+// friend members
+
+ostream& operator<<(ostream& ostr, const Field& field){
+    ostr << " " << field.number;
+    return ostr;
+}
+
+
+// ****************************************************************************************************
 // public members
 
 Field::Field(int numField, char dataOfField, Field* previousField, Field* nextField, Field* dir_0_Field, Field* dir_60_Field, Field* dir_120_Field, Field* dir_180_Field, Field* dir_240_Field, Field* dir_300_Field){

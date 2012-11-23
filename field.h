@@ -1,10 +1,13 @@
 #ifndef FIELD_H
 #define FIELD_H
 
+#include <iostream>
 #include "iterator.h"
 #include "board.h"
 #include "field.h"
 #include "searchalgorithm.h"
+
+using namespace std;
 
 // forward declaration
 class Iterator;
@@ -12,10 +15,10 @@ class Board;
 class SearchAlgorithm;
 
 class Field{
+    friend ostream& operator<<(ostream&, const Field&);
     friend class Iterator;
     friend class Board;
     friend class SearchAlgorithm;
-
 public:
     // the constructor of a field (by default all neighbors are 0 and the fieldnumber is 0)
     Field(int numField = 0, char dataOfField = '.', Field* previousField = 0, Field* nextField = 0, Field* dir_0_Field = 0, Field* dir_60_Field = 0, Field* dir_120_Field = 0, Field* dir_180_Field = 0, Field* dir_240_Field = 0, Field* dir_300_Field = 0);

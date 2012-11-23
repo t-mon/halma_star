@@ -223,28 +223,30 @@ void SearchAlgorithm::searchStep()
     }
 
     Field* n = getNextBestField();
-    n->g = steps;
+    //n->g = steps;
     // steps +1...this will be the g value of the neighbours
     steps++;
 
     if(n == goal){
         cout << "--------------> GOAL REACHED!!!! <------------------" << endl;
         // write the best path to the shortestPath List
+        //vector<double> path;
         shortestPath.push_back(n);
+        //path.pop_back(n->number);
+        n->data = '*';
         Field *x = n;
         while ( x != start ){
             x = x->parent;
+            x->data = '*';
+            //path.pop_back(x->number);
             shortestPath.push_back(x);
         }
         cout << "GoalField = " << goal->number << endl;
         cout << "Found path : ";
-        for(vector<Field*>::iterator listIterator = shortestPath.end(); listIterator != shortestPath.begin(); --listIterator){
-            x = *listIterator;
-            cout << x->number << "->";
-            x->data = '*';
+        for(vector<Field*>::iterator listIterator = shortestPath.end(); listIterator != shortestPath.begin(); listIterator--){
+            cout << *listIterator << "->";
         }
-        cout << n->number << endl;
-        n->data = '*';
+        cout << n << endl;
 
         goalReached = true;
         return;
@@ -278,7 +280,7 @@ void SearchAlgorithm::searchStep()
             // the parent of this neighbour is the current field
             n->dir_0->parent = n;
             // set g value of neighbour
-            //n->dir_0->g = steps;
+            n->dir_0->g = steps;
         }
     }
     // if controllNeighbour returns true we can add this neighbour to the open list
@@ -288,7 +290,7 @@ void SearchAlgorithm::searchStep()
             // the parent of this neighbour is the current field
             n->dir_60->parent = n;
             // set g value of neighbour
-            //n->dir_60->g = steps;
+            n->dir_60->g = steps;
         }
     }
     // if controllNeighbour returns true we can add this neighbour to the open list
@@ -298,7 +300,7 @@ void SearchAlgorithm::searchStep()
             // the parent of this neighbour is the current field
             n->dir_120->parent = n;
             // set g value of neighbour
-            //n->dir_120->g = steps;
+            n->dir_120->g = steps;
         }
     }
     // if controllNeighbour returns true we can add this neighbour to the open list
@@ -308,7 +310,7 @@ void SearchAlgorithm::searchStep()
             // the parent of this neighbour is the current field
             n->dir_180->parent = n;
             // set g value of neighbour
-            //n->dir_180->g = steps;
+            n->dir_180->g = steps;
         }
     }
     // if controllNeighbour returns true we can add this neighbour to the open list
@@ -318,7 +320,7 @@ void SearchAlgorithm::searchStep()
             // the parent of this neighbour is the current field
             n->dir_240->parent = n;
             // set g value of neighbour
-            //n->dir_240->g = steps;
+            n->dir_240->g = steps;
         }
     }
     // if controllNeighbour returns true we can add this neighbour to the open list
@@ -328,7 +330,7 @@ void SearchAlgorithm::searchStep()
             // the parent of this neighbour is the current field
             n->dir_300->parent = n;
             // set g value of neighbour
-            //n->dir_300->g = steps;
+            n->dir_300->g = steps;
         }
     }
     // now we have controlled every neighbour of the current field an added all valid neighbours to the open list

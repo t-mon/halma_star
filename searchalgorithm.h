@@ -46,12 +46,10 @@ public:
 
     // calculates the heuristic with vectors
     void setHeuristicsGeometrical();
-    // calculates the heuristic with circles starting by the goal field
+    // (OLD) calculates the heuristic with circles starting by the goal field
     void setHeuristicsCircular();
-
+    // calculates the heuristic with circles start by the goal field
     void startHeuristicsCircular();
-    bool setHeuristicsCircular2(Field* currentField);
-    void setNeighbourHeuristic(Field* currentField);
 
     // inizialize start an goal fields
     void setStartAndGoal();
@@ -70,6 +68,9 @@ public:
     void print();           // print the star with heuristic values
 
 private:
+    bool setHeuristicsCircular2(Field* currentField);
+    void setNeighbourHeuristic(Field* currentField);
+
     Board &gameBoard;       // the current gameboard situation
 
     // counter for the steps already made

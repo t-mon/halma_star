@@ -13,34 +13,40 @@ int main(){
 
     Iterator gameIterator(gameBoard);
     gameIterator.resetToFirst();
-    //gameIterator.setCurrentData('x');
-//    gameIterator.go_240_dir();
-//    gameIterator.go_240_dir();
-//    gameIterator.go_240_dir();
-//    gameIterator.go_240_dir();
-//    gameIterator.go_240_dir();
-//    gameIterator.go_0_dir();
-//    gameIterator.go_0_dir();
-//    gameIterator.go_0_dir();
-//    gameIterator.go_0_dir();
-//    gameIterator.setCurrentData('o');
-//    gameIterator.go_0_dir();
-//    gameIterator.go_0_dir();
-//    gameIterator.go_0_dir();
-//    gameIterator.go_0_dir();
-//    gameIterator.setCurrentData('o');
-//    gameIterator.go_180_dir();
-//    gameIterator.go_180_dir();
-//    gameIterator.go_180_dir();
-//    gameIterator.go_180_dir();
-//    gameIterator.go_180_dir();
-//    gameIterator.go_180_dir();
-//    gameIterator.go_180_dir();
-//    gameIterator.go_180_dir();
-//    gameIterator.go_180_dir();
-//    gameIterator.setCurrentData('o');
-//    gameIterator.go_0_dir();
-//    gameIterator.setCurrentData('o');
+    gameIterator.setCurrentData('x');
+    gameIterator.go_240_dir();
+    gameIterator.go_240_dir();
+    gameIterator.go_240_dir();
+    gameIterator.go_240_dir();
+    gameIterator.go_240_dir();
+    gameIterator.go_0_dir();
+    gameIterator.go_0_dir();
+    gameIterator.go_0_dir();
+    gameIterator.go_0_dir();
+    gameIterator.setCurrentData('o');
+    gameIterator.go_0_dir();
+    gameIterator.go_0_dir();
+    gameIterator.go_0_dir();
+    gameIterator.go_0_dir();
+    gameIterator.setCurrentData('o');
+    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_180_dir();
+    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
+gameIterator.go_180_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_300_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
+
+    gameIterator.go_0_dir();
+    gameIterator.setCurrentData('o');
 
 
 
@@ -82,9 +88,9 @@ int main(){
 //    }
 
     SearchAlgorithm suche(gameBoard,startFieldIterator.getCurrentField(),goalFieldIterator.getCurrentField());
-    suche.startHeuristicsCircular();
+//    suche.startHeuristicsCircular();
     cout << "Current goalfield = " << goalFieldIterator.getCurrentNumber() << endl;
-    suche.print();
+//    suche.print();
     suche.findPath();
 
     gameIterator.setCurrentData('x');

@@ -39,7 +39,7 @@ class Board;
 class SearchAlgorithm
 {
 public:
-    SearchAlgorithm(Board &board, Field* startField, Field* goalField):gameBoard(board),start(startField), goal(goalField){goalReached = false;}
+    SearchAlgorithm(Board &board, Field* startField, Field* goalField):gameBoard(board),start(startField), goal(goalField){goalReached = false; noWayToGoal = false;}
 
     Field* getGoalField();
     Field* getStartField();
@@ -61,6 +61,9 @@ public:
     Field* getNextBestField();
     void searchStep();
     bool controllNeighbour(Field* directionField);
+    bool isInOpenList(Field* directionField);
+    bool isInVisitedList(Field* directionField);
+    bool isOccupied(Field* directionField);
 
     // method that searches the path form start to goal and safes it into the shortest path list
     void findPath();
@@ -77,6 +80,7 @@ private:
     int steps;
 
     bool goalReached;
+    bool noWayToGoal;
 
     Field* currentSolution; // the field which is currently the best solution
     Field* start;           // the start field from which the algorithm starts

@@ -8,7 +8,7 @@ using namespace std;
 
 int main(){
 
-    FileParser phareser("/Users/benutzer/Documents/Programmieren/halma_star/Graph.txt");
+    FileParser phareser("Graph.txt");
     Board gameBoard = phareser.pharse();
 
     Iterator gameIterator(gameBoard);
@@ -38,13 +38,16 @@ int main(){
     gameIterator.go_180_dir();gameIterator.setCurrentData('o');
     gameIterator.go_180_dir();
     gameIterator.go_180_dir();gameIterator.setCurrentData('o');
-gameIterator.go_180_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
     gameIterator.go_300_dir();gameIterator.setCurrentData('o');
     gameIterator.go_0_dir();gameIterator.setCurrentData('o');
     gameIterator.go_0_dir();gameIterator.setCurrentData('o');
     gameIterator.go_0_dir();gameIterator.setCurrentData('o');
     gameIterator.go_0_dir();gameIterator.setCurrentData('o');
-
+    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
     gameIterator.go_0_dir();
     gameIterator.setCurrentData('o');
 
@@ -80,19 +83,19 @@ gameIterator.go_180_dir();gameIterator.setCurrentData('o');
 
 
 
-//    for(int i = 0; i < 6; i++){
-//        goalFieldIterator.go_240_dir();
-//    }
-//    for(int i = 0; i < 6; i++){
-//        goalFieldIterator.go_300_dir();
-//    }
+    //    for(int i = 0; i < 6; i++){
+    //        goalFieldIterator.go_240_dir();
+    //    }
+    //    for(int i = 0; i < 6; i++){
+    //        goalFieldIterator.go_300_dir();
+    //    }
 
     SearchAlgorithm suche(gameBoard,startFieldIterator.getCurrentField(),goalFieldIterator.getCurrentField());
-//    suche.startHeuristicsCircular();
+    //    suche.startHeuristicsCircular();
     cout << "Current goalfield = " << goalFieldIterator.getCurrentNumber() << endl;
-//    suche.print();
+    //    suche.print();
     suche.findPath();
-
+    gameIterator.resetToFirst();
     gameIterator.setCurrentData('x');
 
     cout << endl << endl << "field: " << gameIterator.getCurrentNumber() << endl;
@@ -150,4 +153,3 @@ gameIterator.go_180_dir();gameIterator.setCurrentData('o');
     }
     return 0;
 }
-

@@ -28,7 +28,7 @@
 #include "field.h"
 #include <vector>
 #include <algorithm>
-
+#include <time.h>
 #define DEBUG_HEURISTIC 1
 
 using namespace std;
@@ -69,7 +69,7 @@ public:
     void findPath();
 
     void print();           // print the star with heuristic values
-
+    void setRandomStones(int max_stones =13); // set Random Stones into the field
 private:
     bool setHeuristicsCircular2(Field* currentField);
     void setNeighbourHeuristic(Field* currentField);

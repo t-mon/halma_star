@@ -8,8 +8,10 @@ using namespace std;
 
 int main(){
 
-    FileParser phareser("Graph.txt");
+    FileParser phareser("/Users/benutzer/Documents/Programmieren/halma_star/Graph.txt");
     Board gameBoard = phareser.pharse();
+
+
 
     Iterator gameIterator(gameBoard);
     gameIterator.resetToFirst();
@@ -94,6 +96,7 @@ int main(){
     //    suche.startHeuristicsCircular();
     cout << "Current goalfield = " << goalFieldIterator.getCurrentNumber() << endl;
     //    suche.print();
+    suche.setRandomStones(50);
     suche.findPath();
     gameIterator.resetToFirst();
     gameIterator.setCurrentData('x');

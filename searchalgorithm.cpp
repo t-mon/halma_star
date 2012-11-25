@@ -722,6 +722,26 @@ void SearchAlgorithm::print(){
     gameBoard.print_h();
 }
 
+void SearchAlgorithm::setRandomStones(int max_stones ){
+    int stone_pos;
+    time_t t;
+    Iterator it(gameBoard);
+    time(&t);
+    srand((unsigned int)t);              /* init randomcout */
+
+    for(int i = 0; i < max_stones;i++){
+        stone_pos = rand() % 121 + 1;
+        it.resetToFirst();
+        while(it.current != 0){
+            if(it.current->number == stone_pos){
+                it.current->data = 'o';
+            }
+            ++it;
+        }
+
+    }
+
+}
 
 
 

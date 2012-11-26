@@ -4,6 +4,7 @@
 #include "board.h"
 #include "field.h"
 
+
 class Field;
 class Board;
 class SearchAlgorithm;

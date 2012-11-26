@@ -5,7 +5,7 @@
 // ****************************************************************************************************
 // public members
 
-Board FileParser::pharse(){
+Board FileParser::parse(){
 
     //this->generateGraphFile();
 

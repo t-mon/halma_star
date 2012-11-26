@@ -16,7 +16,7 @@ class FileParser
 public:
     // constructor gets the path to the graph file
     FileParser(const char* pathToGraph):filepath(pathToGraph){}
-    Board pharse();             // pharse from the given file the connections between the boardfields
+    Board parse();             // pharse from the given file the connections between the boardfields
 
 private:
     const char* filepath;       // filepath with the Graph.txt

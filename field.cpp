@@ -4,7 +4,7 @@
 // friend members
 
 ostream& operator<<(ostream& ostr, const Field& field){
-    ostr << " " << field.number;
+    ostr << field.number;
     return ostr;
 }
 
@@ -36,3 +36,4 @@ Field::Field(int numField, char dataOfField, Field* previousField, Field* nextFi
 double Field::getF(){
     return g+h;
 }
+

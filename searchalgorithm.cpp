@@ -1,4 +1,13 @@
 #include "searchalgorithm.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <vector>
+#include <functional>
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
 
 Field *SearchAlgorithm::getGoalField(){
     return goal;
@@ -222,6 +231,11 @@ void SearchAlgorithm::setNeighbourHeuristic(Field* currentField){
     if(DEBUG_HEURISTIC) cout << endl;
 }
 
+//bool SearchAlgorithm::quickSortCompareFunction(const Field &a, const Field &b)
+//{
+//    return (a.getF() < b.getF());
+//}
+
 
 /*
   Methode: setHeuristicsCircular
@@ -327,23 +341,6 @@ void SearchAlgorithm::setHeuristicsCircular(){
 }
 
 
-void SearchAlgorithm::setHeuristicsGeometrical(){
-    Iterator iterator(gameBoard);
-
-    // go to the goalfield with the iterator
-    iterator.resetToFirst();
-    while(iterator.current->number != goal->number){
-        ++iterator;
-    }
-
-    iterator.current->h = 0;
-
-    // an so on.... :)
-
-}
-
-
-
 
 void SearchAlgorithm::setStartAndGoal(){
 
@@ -403,9 +400,26 @@ void SearchAlgorithm::inizializeLists(){
 
 Field *SearchAlgorithm::getNextBestField()
 {
+
+    // first controll if the open list is empty...search finished!!!!!!
+    if(openList.empty()){
+        cout << "--> end of search! no possibility left" << endl << endl;
+        noWayToGoal = true;
+        return 0;
+    }
+
     double currentBestF = 1000;
     Field* currentField = 0;
     Field* bestField = 0;
+
+
+    //sort(openList.begin(),openList.end(),quickSortCompareFunction);
+
+    cout << "f-values of openlist:  ";
+    for(int i = 0; i< openList.size(); i++){
+        cout << *openList.at(i) << ":" << openList.at(i)->getF() << ", ";
+    }
+    cout << endl;
 
     // go trough the open list and find the field with the best F in the openList (all neighbours which aren't visited yet)
     for(vector<Field*>::iterator openListIterator = openList.begin(); openListIterator != openList.end(); ++openListIterator){
@@ -452,21 +466,20 @@ void SearchAlgorithm::searchStep()
         }
         cout << "GoalField = " << goal->number << endl;
         cout << "Found path : ";
-        for(vector<Field*>::iterator listIterator = shortestPath.end(); listIterator != shortestPath.begin(); listIterator--){
-            cout << *listIterator << "->";
+        for (int i = shortestPath.size(); i >= 0; i--){
+            cout << *shortestPath[i] << "->";
         }
+
+//        for(vector<Field*>::iterator listIterator = shortestPath.end(); listIterator != shortestPath.begin(); listIterator--){
+//            cout << *listIterator << "->";
+//        }
         cout << n << endl;
 
         goalReached = true;
         return;
     }
 
-    // first controll if the open list is empty...search finished!!!!!!
-    if(openList.empty()){
-        cout << "--> end of search! no possibility left" << endl << endl;
-        noWayToGoal = true;
-        return;
-    }
+
 
     // remove it from the openlist
     for(vector<Field*>::iterator openListIterator = openList.begin(); openListIterator != openList.end(); ++openListIterator){
@@ -629,49 +642,49 @@ void SearchAlgorithm::searchStep()
 
 }
 
-bool SearchAlgorithm::controllNeighbour(Field *directionField)
-{
-    // methode returns false if:
-    //      -> field is ocupied
-    //      -> field is allready in the openlist
-    //      -> field is allready in the visited list
-    // is field in the openList?
-    bool inOpenList = false;
-    for(vector<Field*>::iterator listIterator = openList.begin(); listIterator != openList.end(); ++listIterator){
-        if(directionField == *listIterator){
-            Field* x = *listIterator;
-            //cout << directionField->number << "allready in openlist with g =" << directionField->g << " current g = " << currentSolution->g << endl;
-            // check if the g value of the parent from the existing field in the openlist is better than the current
-            if(x->parent->g > currentSolution->g){
-                x->parent = currentSolution;
-            }
-            inOpenList = true;
-            break;
-        }
-    }
-    // is field in the visitedList?
-    bool inVisitedList = false;
-    for(vector<Field*>::iterator listIterator = visitedList.begin(); listIterator != visitedList.end(); ++listIterator){
-        if(directionField == *listIterator){
-            inVisitedList = true;
-            break;
-        }
-    }
-    // is field occupied?
-    // ....implement later the posibility to jump
-    //    bool occupied = false;
-    //    if(directionField->data != '.'){
-    //        occupied = true;
-    //    }
-    if(!inOpenList && !inVisitedList){
-        cout << "field " << directionField->number << " added to openlist" << endl;
-        //set g value
-        directionField->g = steps;
-        return true;
-    }else{
-        return false;
-    }
-}
+//bool SearchAlgorithm::controllNeighbour(Field *directionField)
+//{
+//    // methode returns false if:
+//    //      -> field is ocupied
+//    //      -> field is allready in the openlist
+//    //      -> field is allready in the visited list
+//    // is field in the openList?
+//    bool inOpenList = false;
+//    for(vector<Field*>::iterator listIterator = openList.begin(); listIterator != openList.end(); ++listIterator){
+//        if(directionField == *listIterator){
+//            Field* x = *listIterator;
+//            //cout << directionField->number << "allready in openlist with g =" << directionField->g << " current g = " << currentSolution->g << endl;
+//            // check if the g value of the parent from the existing field in the openlist is better than the current
+//            if(x->parent->g > currentSolution->g){
+//                x->parent = currentSolution;
+//            }
+//            inOpenList = true;
+//            break;
+//        }
+//    }
+//    // is field in the visitedList?
+//    bool inVisitedList = false;
+//    for(vector<Field*>::iterator listIterator = visitedList.begin(); listIterator != visitedList.end(); ++listIterator){
+//        if(directionField == *listIterator){
+//            inVisitedList = true;
+//            break;
+//        }
+//    }
+//    // is field occupied?
+//    // ....implement later the posibility to jump
+//    //    bool occupied = false;
+//    //    if(directionField->data != '.'){
+//    //        occupied = true;
+//    //    }
+//    if(!inOpenList && !inVisitedList){
+//        cout << "field " << directionField->number << " added to openlist" << endl;
+//        //set g value
+//        directionField->g = steps;
+//        return true;
+//    }else{
+//        return false;
+//    }
+//}
 
 bool SearchAlgorithm::isInOpenList(Field *directionField)
 {

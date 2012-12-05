@@ -27,9 +27,8 @@
 #include "iterator.h"
 #include "field.h"
 #include <vector>
-#include <algorithm>
 #include <time.h>
-#define DEBUG_HEURISTIC 1
+#define DEBUG_HEURISTIC 0
 
 using namespace std;
 
@@ -44,8 +43,6 @@ public:
     Field* getGoalField();
     Field* getStartField();
 
-    // calculates the heuristic with vectors
-    void setHeuristicsGeometrical();
     // (OLD) calculates the heuristic with circles starting by the goal field
     void setHeuristicsCircular();
     // calculates the heuristic with circles start by the goal field
@@ -60,7 +57,7 @@ public:
     // this method returns the neighbour with the best f value
     Field* getNextBestField();
     void searchStep();
-    bool controllNeighbour(Field* directionField);
+    //bool controllNeighbour(Field* directionField);
     bool isInOpenList(Field* directionField);
     bool isInVisitedList(Field* directionField);
     bool isOccupied(Field* directionField);
@@ -73,6 +70,8 @@ public:
 private:
     bool setHeuristicsCircular2(Field* currentField);
     void setNeighbourHeuristic(Field* currentField);
+    bool quickSortCompareFunction(const Field &a, const Field &b);
+
 
     Board &gameBoard;       // the current gameboard situation
 

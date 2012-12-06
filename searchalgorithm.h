@@ -27,8 +27,9 @@
 #include "iterator.h"
 #include "field.h"
 #include <vector>
+#include <list>
 #include <time.h>
-#define DEBUG_HEURISTIC 0
+#define DEBUG_HEURISTIC 1
 
 using namespace std;
 
@@ -42,6 +43,8 @@ public:
 
     Field* getGoalField();
     Field* getStartField();
+
+    static bool quickSortCompareFunction(Field *a, Field *b);
 
     // (OLD) calculates the heuristic with circles starting by the goal field
     void setHeuristicsCircular();
@@ -67,11 +70,15 @@ public:
 
     void print();           // print the star with heuristic values
     void setRandomStones(int max_stones =13); // set Random Stones into the field
+
+
 private:
     bool setHeuristicsCircular2(Field* currentField);
     void setNeighbourHeuristic(Field* currentField);
-    bool quickSortCompareFunction(const Field &a, const Field &b);
 
+    void startBFSearch(Field* currentField);
+    bool stepBFSearch(Field * currentField);
+    bool tryToJump(Field* currentField);
 
     Board &gameBoard;       // the current gameboard situation
 
@@ -85,11 +92,16 @@ private:
     Field* start;           // the start field from which the algorithm starts
     Field* goal;            // the goal field where the algorithm wants to go
 
-    vector <Field*> openList;
-    vector <Field*> visitedList;
-    vector <Field*> shortestPath;
+    list <Field*> openList;
+    list <Field*> visitedList;
+    list <Field*> shortestPath;
 
-    vector <Field*> NodeList; // List for heuristic
+    vector <Field*> NodeList;           // List for heuristic
+
+    list <Field*> openBFSearchList;     // list for multiple jump
+    list <Field*> visitedBFSearchList;  // list for multiple jump
+    list <Field*> bestJumpPathBFSearch; // list where is the path for the best jumpseries
+
 };
 
 #endif // SEARCHALGORITHM_H

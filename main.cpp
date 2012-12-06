@@ -103,56 +103,56 @@ int main(){
 
     cout << endl << endl << "field: " << gameIterator.getCurrentNumber() << endl;
     gameBoard.print();
-    cout << "to move the \"x\" press: d = 0, e = 60, w = 120, a = 180, y = 240, x = 300" << endl;
+//    cout << "to move the \"x\" press: d = 0, e = 60, w = 120, a = 180, y = 240, x = 300" << endl;
 
 
-    char direction;
+//    char direction;
 
-    while(gameIterator.getCurrentField() != suche.getGoalField()){
-        cin >> direction;
+//    while(gameIterator.getCurrentField() != suche.getGoalField()){
+//        cin >> direction;
 
-        switch(direction){
-        case 'd':
-            gameIterator.setCurrentData('.');
-            gameIterator.move_0_dir();
-            gameIterator.setCurrentData('x');
-            gameIterator.getPossibleDirections();
-            break;
-        case 'e':
-            gameIterator.setCurrentData('.');
-            gameIterator.move_60_dir();
-            gameIterator.setCurrentData('x');
-            gameIterator.getPossibleDirections();
-            break;
-        case 'w':
-            gameIterator.setCurrentData('.');
-            gameIterator.move_120_dir();
-            gameIterator.setCurrentData('x');
-            gameIterator.getPossibleDirections();
-            break;
-        case 'a':
-            gameIterator.setCurrentData('.');
-            gameIterator.move_180_dir();
-            gameIterator.setCurrentData('x');
-            gameIterator.getPossibleDirections();
-            break;
-        case 'y':
-            gameIterator.setCurrentData('.');
-            gameIterator.move_240_dir();
-            gameIterator.setCurrentData('x');
-            gameIterator.getPossibleDirections();
-            break;
-        case 'x':
-            gameIterator.setCurrentData('.');
-            gameIterator.move_300_dir();
-            gameIterator.setCurrentData('x');
-            gameIterator.getPossibleDirections();
-            break;
-        }
-        cout << endl << endl << "field: " << gameIterator.getCurrentNumber() << endl;
-        gameBoard.print();
-        cout << "to move press: d = 0, e = 60, w = 120, a = 180, y = 240, x = 300" << endl;
+//        switch(direction){
+//        case 'd':
+//            gameIterator.setCurrentData('.');
+//            gameIterator.move_0_dir();
+//            gameIterator.setCurrentData('x');
+//            gameIterator.getPossibleDirections();
+//            break;
+//        case 'e':
+//            gameIterator.setCurrentData('.');
+//            gameIterator.move_60_dir();
+//            gameIterator.setCurrentData('x');
+//            gameIterator.getPossibleDirections();
+//            break;
+//        case 'w':
+//            gameIterator.setCurrentData('.');
+//            gameIterator.move_120_dir();
+//            gameIterator.setCurrentData('x');
+//            gameIterator.getPossibleDirections();
+//            break;
+//        case 'a':
+//            gameIterator.setCurrentData('.');
+//            gameIterator.move_180_dir();
+//            gameIterator.setCurrentData('x');
+//            gameIterator.getPossibleDirections();
+//            break;
+//        case 'y':
+//            gameIterator.setCurrentData('.');
+//            gameIterator.move_240_dir();
+//            gameIterator.setCurrentData('x');
+//            gameIterator.getPossibleDirections();
+//            break;
+//        case 'x':
+//            gameIterator.setCurrentData('.');
+//            gameIterator.move_300_dir();
+//            gameIterator.setCurrentData('x');
+//            gameIterator.getPossibleDirections();
+//            break;
+//        }
+//        cout << endl << endl << "field: " << gameIterator.getCurrentNumber() << endl;
+//        gameBoard.print();
+//        cout << "to move press: d = 0, e = 60, w = 120, a = 180, y = 240, x = 300" << endl;
 
-    }
+//    }
     return 0;
 }

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
+#include <list>
 #include <functional>
 #include <iostream>
 #include <algorithm>
@@ -231,10 +232,76 @@ void SearchAlgorithm::setNeighbourHeuristic(Field* currentField){
     if(DEBUG_HEURISTIC) cout << endl;
 }
 
-//bool SearchAlgorithm::quickSortCompareFunction(const Field &a, const Field &b)
-//{
-//    return (a.getF() < b.getF());
-//}
+void SearchAlgorithm::startBFSearch(Field *currentField)
+{
+    // reset the NodeList und clear it
+    openBFSearchList.clear();
+
+    // Push goalfield to the end of the List and set h to zero
+    openBFSearchList.push_back(goal);
+
+    // start the BF-algorithm
+    stepBFSearch(openBFSearchList.front());
+
+
+}
+
+bool SearchAlgorithm::stepBFSearch(Field *currentField)
+{
+
+    // go throw the neighbourfields and try to jump
+    tryToJump(currentField);
+
+    // if you are at the end of the list return
+    if(currentField == openBFSearchList.back()){
+        return true;
+    }
+
+    Field* nextField;
+    // find the next Field in NodeList
+    for(list<Field*>::iterator listIterator = openBFSearchList.begin(); listIterator != openBFSearchList.end(); ++listIterator){
+        if(currentField == *listIterator){
+            ++listIterator;
+            nextField = *listIterator;
+            break;
+        }
+    }
+
+    // recursive function call with the next Field in the NodeList
+    stepBFSearch(nextField);
+    return true;
+}
+
+bool SearchAlgorithm::tryToJump(Field *currentField)
+{
+
+    // if i can jump in dir_0 add this field to the openBFSearch list
+    Field* nextField = currentField->dir_0;
+    Field* sec_nextField;
+    if(nextField != 0){
+        sec_nextField = currentField->dir_0->dir_0;
+    }
+
+    //    // if controllNeighbour returns true we can add this neighbour to the open list
+    //    if(nextField != 0){
+    //        if(!isInOpenList(nextField) && !isInVisitedList(nextField)){
+    //            // is not in open list and not in visited list
+    //            // now check if this field is occupied, if it is occupied, controll the next field in this direction if it exists
+    //            if(isOccupied(n->dir_0) && n->dir_0->dir_0 != 0){
+    //                // if this is true we can jump and we add the next field to the openlist and set parent and g value
+    //                if(!isInOpenList(n->dir_0->dir_0) && !isInVisitedList(n->dir_0->dir_0) && !(isOccupied(n->dir_0->dir_0))){
+    //                    // make a breath first search and try to jump as far as you can
+
+
+
+
+}
+
+
+bool SearchAlgorithm::quickSortCompareFunction(Field *a, Field *b)
+{
+    return (a->getF() > b->getF());
+}
 
 
 /*
@@ -377,21 +444,21 @@ void SearchAlgorithm::inizializeLists(){
     cout << "inizialize lists ....." << endl;
 
     // delete every node from the openlist and clear the list
-    for(unsigned int i = 0; i < openList.size(); i++){
-        delete openList[i];
-    }
+    //    for(unsigned int i = 0; i < openList.size(); i++){
+    //        delete openList[i];
+    //    }
     openList.clear();
 
     // delete every node from the visitedList and clear the list
-    for(unsigned int i = 0; i < visitedList.size(); i++){
-        delete visitedList[i];
-    }
+    //    for(unsigned int i = 0; i < visitedList.size(); i++){
+    //        delete visitedList[i];
+    //    }
     visitedList.clear();
 
     // delete every node from the shortestPath - list and clear the list
-    for(unsigned int i = 0; i < shortestPath.size(); i++){
-        delete shortestPath[i];
-    }
+    //    for(unsigned int i = 0; i < shortestPath.size(); i++){
+    //        delete shortestPath[i];
+    //    }
     shortestPath.clear();
 
     cout << "lists inizialized ...OK" << endl;
@@ -404,38 +471,46 @@ Field *SearchAlgorithm::getNextBestField()
     // first controll if the open list is empty...search finished!!!!!!
     if(openList.empty()){
         cout << "--> end of search! no possibility left" << endl << endl;
+
+        shortestPath.clear();
+
+        visitedList.sort(quickSortCompareFunction);
+        Field* bestField = openList.back();
+        shortestPath.push_front(bestField);
+        while(bestField!= start){
+            bestField = bestField->parent;
+            bestField->data = '*';
+            shortestPath.push_front(bestField);
+        }
+
+
+        cout << "GoalField = " << goal->number << endl;
+        cout << "Best path as far as i can: ";
+        list<Field*>::iterator it;
+        for(it = shortestPath.begin(); it != shortestPath.end(); it++){
+            cout << **it << "->" ;
+        }
+
+        // safe tha path from the best visited list field to start and take that for the best path
         noWayToGoal = true;
         return 0;
     }
 
-    double currentBestF = 1000;
-    Field* currentField = 0;
-    Field* bestField = 0;
+    // sort the openlist (best f field is at the end)
+    openList.sort(quickSortCompareFunction);
 
-
-    //sort(openList.begin(),openList.end(),quickSortCompareFunction);
-
-    cout << "f-values of openlist:  ";
-    for(int i = 0; i< openList.size(); i++){
-        cout << *openList.at(i) << ":" << openList.at(i)->getF() << ", ";
+    cout << "f-values of openlist <field>:<f> ,... :  ";
+    for(list<Field*>::iterator it = openList.begin(); it != openList.end(); it++){
+        Field* x = *it;
+        cout << *x << ":" << x->getF() << ", ";
     }
     cout << endl;
 
-    // go trough the open list and find the field with the best F in the openList (all neighbours which aren't visited yet)
-    for(vector<Field*>::iterator openListIterator = openList.begin(); openListIterator != openList.end(); ++openListIterator){
-        // get the current field where the iterator stands
-        currentField = *openListIterator;
-        // if the f of the current field is the best until now safe the f and the field with this best f
-        if(currentBestF > currentField->getF()){
-            currentBestF = currentField->getF();
-            bestField = currentField;
-        }
-    }
+    Field* bestField = openList.back();
 
     // return the current best field
     cout << "\tcurrent best solution field = " << bestField->number << endl;
     currentSolution = bestField;
-    //shortestPath.push_back(bestField);
     return bestField;
 }
 
@@ -452,28 +527,25 @@ void SearchAlgorithm::searchStep()
     // check if we have found the goal field
     if(n == goal){
         cout << "--------------> GOAL REACHED!!!! <------------------" << endl;
+
         // write the best path to the shortestPath List
-        //vector<double> path;
-        shortestPath.push_back(n);
-        //path.pop_back(n->number);
+        shortestPath.clear();
+
+        shortestPath.push_front(n);
         n->data = '*';
         Field *x = n;
         while ( x != start ){
             x = x->parent;
             x->data = '*';
-            //path.pop_back(x->number);
-            shortestPath.push_back(x);
-        }
-        cout << "GoalField = " << goal->number << endl;
-        cout << "Found path : ";
-        for (int i = shortestPath.size(); i >= 0; i--){
-            cout << *shortestPath[i] << "->";
+            shortestPath.push_front(x);
         }
 
-//        for(vector<Field*>::iterator listIterator = shortestPath.end(); listIterator != shortestPath.begin(); listIterator--){
-//            cout << *listIterator << "->";
-//        }
-        cout << n << endl;
+        cout << "GoalField = " << goal->number << endl;
+        cout << "Found path : ";
+        list<Field*>::iterator it;
+        for(it = shortestPath.begin(); it != shortestPath.end(); it++){
+            cout << **it << "->" ;
+        }
 
         goalReached = true;
         return;
@@ -482,13 +554,8 @@ void SearchAlgorithm::searchStep()
 
 
     // remove it from the openlist
-    for(vector<Field*>::iterator openListIterator = openList.begin(); openListIterator != openList.end(); ++openListIterator){
-        // is the current field our current best field?
-        if(n == *openListIterator){
-            openList.erase(openListIterator);
-            break;
-        }
-    }
+    openList.pop_back();
+
     // add it to the visited list
     visitedList.push_back(n);
 
@@ -508,6 +575,9 @@ void SearchAlgorithm::searchStep()
             if(isOccupied(n->dir_0) && n->dir_0->dir_0 != 0){
                 // if this is true we can jump and we add the next field to the openlist and set parent and g value
                 if(!isInOpenList(n->dir_0->dir_0) && !isInVisitedList(n->dir_0->dir_0) && !(isOccupied(n->dir_0->dir_0))){
+                    // make a breath first search and try to jump as far as you can
+
+
                     openList.push_back(n->dir_0->dir_0);
                     // the parent of this neighbour is the current field
                     n->dir_0->dir_0->parent = n;
@@ -639,56 +709,13 @@ void SearchAlgorithm::searchStep()
         }
     }
     // now we have controlled every neighbour of the current field an added all valid neighbours to the open list
-
+    // the current field is the parent of all valid neigbours
 }
 
-//bool SearchAlgorithm::controllNeighbour(Field *directionField)
-//{
-//    // methode returns false if:
-//    //      -> field is ocupied
-//    //      -> field is allready in the openlist
-//    //      -> field is allready in the visited list
-//    // is field in the openList?
-//    bool inOpenList = false;
-//    for(vector<Field*>::iterator listIterator = openList.begin(); listIterator != openList.end(); ++listIterator){
-//        if(directionField == *listIterator){
-//            Field* x = *listIterator;
-//            //cout << directionField->number << "allready in openlist with g =" << directionField->g << " current g = " << currentSolution->g << endl;
-//            // check if the g value of the parent from the existing field in the openlist is better than the current
-//            if(x->parent->g > currentSolution->g){
-//                x->parent = currentSolution;
-//            }
-//            inOpenList = true;
-//            break;
-//        }
-//    }
-//    // is field in the visitedList?
-//    bool inVisitedList = false;
-//    for(vector<Field*>::iterator listIterator = visitedList.begin(); listIterator != visitedList.end(); ++listIterator){
-//        if(directionField == *listIterator){
-//            inVisitedList = true;
-//            break;
-//        }
-//    }
-//    // is field occupied?
-//    // ....implement later the posibility to jump
-//    //    bool occupied = false;
-//    //    if(directionField->data != '.'){
-//    //        occupied = true;
-//    //    }
-//    if(!inOpenList && !inVisitedList){
-//        cout << "field " << directionField->number << " added to openlist" << endl;
-//        //set g value
-//        directionField->g = steps;
-//        return true;
-//    }else{
-//        return false;
-//    }
-//}
 
 bool SearchAlgorithm::isInOpenList(Field *directionField)
 {
-    for(vector<Field*>::iterator listIterator = openList.begin(); listIterator != openList.end(); ++listIterator){
+    for(list<Field*>::iterator listIterator = openList.begin(); listIterator != openList.end(); ++listIterator){
         if(directionField == *listIterator){
             Field* x = *listIterator;
             //cout << directionField->number << "allready in openlist with g =" << directionField->g << " current g = " << currentSolution->g << endl;
@@ -704,7 +731,7 @@ bool SearchAlgorithm::isInOpenList(Field *directionField)
 
 bool SearchAlgorithm::isInVisitedList(Field *directionField)
 {
-    for(vector<Field*>::iterator listIterator = visitedList.begin(); listIterator != visitedList.end(); ++listIterator){
+    for(list<Field*>::iterator listIterator = visitedList.begin(); listIterator != visitedList.end(); ++listIterator){
         if(directionField == *listIterator){
             return true;
         }
@@ -731,7 +758,6 @@ void SearchAlgorithm::findPath(){
 
 
 void SearchAlgorithm::print(){
-    // go through the list
     gameBoard.print_h();
 }
 

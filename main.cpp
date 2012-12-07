@@ -14,44 +14,48 @@ int main(){
 
 
     Iterator gameIterator(gameBoard);
-//    gameIterator.resetToFirst();
-//    gameIterator.setCurrentData('x');
-//    gameIterator.go_240_dir();
-//    gameIterator.go_240_dir();
-//    gameIterator.go_240_dir();
-//    gameIterator.go_240_dir();
-//    gameIterator.go_240_dir();
-//    gameIterator.go_0_dir();
-//    gameIterator.go_0_dir();
-//    gameIterator.go_0_dir();
-//    gameIterator.go_0_dir();
-//    gameIterator.setCurrentData('o');
-//    gameIterator.go_0_dir();
-//    gameIterator.go_0_dir();
-//    gameIterator.go_0_dir();
-//    gameIterator.go_0_dir();
-//    gameIterator.setCurrentData('o');
-//    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
-//    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
-//    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
-//    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
-//    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
-//    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
-//    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
-//    gameIterator.go_180_dir();
-//    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
-//    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
-//    gameIterator.go_300_dir();gameIterator.setCurrentData('o');
-//    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
-//    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
-//    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
-//    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
-//    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
-//    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
-//    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
-//    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
-//    gameIterator.go_0_dir();
-//    gameIterator.setCurrentData('o');
+    gameIterator.resetToFirst();
+    gameIterator.setCurrentData('x');
+    gameIterator.go_240_dir();
+    gameIterator.go_240_dir();
+    gameIterator.go_240_dir();
+    gameIterator.go_240_dir();
+    gameIterator.go_240_dir();
+    gameIterator.go_0_dir();
+    gameIterator.go_0_dir();
+    gameIterator.go_0_dir();
+    gameIterator.go_0_dir();
+    gameIterator.setCurrentData('o');
+    gameIterator.go_0_dir();
+    gameIterator.go_0_dir();
+    gameIterator.go_0_dir();
+    gameIterator.go_0_dir();
+    gameIterator.setCurrentData('o');
+    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
+
+    gameIterator.go_180_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_300_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
+    gameIterator.go_0_dir();gameIterator.setCurrentData('o');
+
+    gameIterator.go_0_dir();
+    gameIterator.setCurrentData('o');
 
 
 

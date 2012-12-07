@@ -238,7 +238,7 @@ void SearchAlgorithm::startBFSearch(Field *currentField)
     openBFSearchList.clear();
 
     // Push goalfield to the end of the List and set h to zero
-    openBFSearchList.push_back(goal);
+    openBFSearchList.push_front(currentField);
 
     // start the BF-algorithm
     stepBFSearch(openBFSearchList.front());
@@ -282,15 +282,15 @@ bool SearchAlgorithm::tryToJump(Field *currentField)
         sec_nextField = currentField->dir_0->dir_0;
     }
 
-    //    // if controllNeighbour returns true we can add this neighbour to the open list
-    //    if(nextField != 0){
-    //        if(!isInOpenList(nextField) && !isInVisitedList(nextField)){
-    //            // is not in open list and not in visited list
-    //            // now check if this field is occupied, if it is occupied, controll the next field in this direction if it exists
-    //            if(isOccupied(n->dir_0) && n->dir_0->dir_0 != 0){
-    //                // if this is true we can jump and we add the next field to the openlist and set parent and g value
-    //                if(!isInOpenList(n->dir_0->dir_0) && !isInVisitedList(n->dir_0->dir_0) && !(isOccupied(n->dir_0->dir_0))){
-    //                    // make a breath first search and try to jump as far as you can
+//        // if controllNeighbour returns true we can add this neighbour to the open list
+//        if(nextField != 0){
+//            if(!isInOpenList(nextField) && !isInVisitedList(nextField)){
+//                // is not in open list and not in visited list
+//                // now check if this field is occupied, if it is occupied, controll the next field in this direction if it exists
+//                if(isOccupied(n->dir_0) && n->dir_0->dir_0 != 0){
+//                    // if this is true we can jump and we add the next field to the openlist and set parent and g value
+//                    if(!isInOpenList(n->dir_0->dir_0) && !isInVisitedList(n->dir_0->dir_0) && !(isOccupied(n->dir_0->dir_0))){
+//                        // make a breath first search and try to jump as far as you can
 
 
 
@@ -472,28 +472,28 @@ Field *SearchAlgorithm::getNextBestField()
     if(openList.empty()){
         cout << "--> end of search! no possibility left" << endl << endl;
 
-        shortestPath.clear();
+        //shortestPath.clear();
 
-        visitedList.sort(quickSortCompareFunction);
-        Field* bestField = openList.back();
-        shortestPath.push_front(bestField);
-        while(bestField!= start){
-            bestField = bestField->parent;
-            bestField->data = '*';
-            shortestPath.push_front(bestField);
-        }
+//        visitedList.sort(quickSortCompareFunction);
+//        Field* bestField = openList.back();
+//        shortestPath.push_front(bestField);
+//        while(bestField!= start){
+//            bestField = bestField->parent;
+//            bestField->data = '*';
+//            shortestPath.push_front(bestField);
+//        }
 
 
         cout << "GoalField = " << goal->number << endl;
         cout << "Best path as far as i can: ";
-        list<Field*>::iterator it;
-        for(it = shortestPath.begin(); it != shortestPath.end(); it++){
-            cout << **it << "->" ;
-        }
+//        list<Field*>::iterator it;
+//        for(it = shortestPath.begin(); it != shortestPath.end(); it++){
+//            cout << **it << "->" ;
+//        }
 
         // safe tha path from the best visited list field to start and take that for the best path
         noWayToGoal = true;
-        return 0;
+        return start;
     }
 
     // sort the openlist (best f field is at the end)

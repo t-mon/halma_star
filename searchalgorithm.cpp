@@ -45,19 +45,19 @@ void SearchAlgorithm::startHeuristicsCircular(){
         cout << "Push goalfield to NodeList and set h=0 ... OK" << endl;
 
     // start the BF-algorithm (starting from the goalfield)
-    setHeuristicsCircular2(NodeList.front());
+    setHeuristicsCircular(NodeList.front());
 
 }
 
 /*
-  Methode: setHeuristicsCircular2
+  Methode: setHeuristicsCircular
   Arguments: (Field*) currentField
   Description:
         go throw all Fields in NodeList
   Return: bool
   by Lukas Holzinger @ 24.11.2012, 14:00
   */
-bool SearchAlgorithm::setHeuristicsCircular2(Field* currentField){
+bool SearchAlgorithm::setHeuristicsCircular(Field* currentField){
 
     if(DEBUG_HEURISTIC)
         cout << "currentField is " << currentField->number << endl;
@@ -84,7 +84,7 @@ bool SearchAlgorithm::setHeuristicsCircular2(Field* currentField){
     if(DEBUG_HEURISTIC)
         print();
     // recursive function call with the next Field in the NodeList
-    setHeuristicsCircular2(nextField);
+    setHeuristicsCircular(nextField);
     return true;
 }
 
@@ -234,14 +234,15 @@ void SearchAlgorithm::setNeighbourHeuristic(Field* currentField){
 
 void SearchAlgorithm::startBFSearch(Field *currentField)
 {
+    bfSteps = 0;
     // reset the NodeList und clear it
-    openBFSearchList.clear();
+    bfSearchList.clear();
 
     // Push goalfield to the end of the List and set h to zero
-    openBFSearchList.push_front(currentField);
+    bfSearchList.push_front(currentField);
 
     // start the BF-algorithm
-    stepBFSearch(openBFSearchList.front());
+    stepBFSearch(bfSearchList.front());
 
 
 }
@@ -249,24 +250,55 @@ void SearchAlgorithm::startBFSearch(Field *currentField)
 bool SearchAlgorithm::stepBFSearch(Field *currentField)
 {
 
+
     // go throw the neighbourfields and try to jump
     tryToJump(currentField);
 
+    if(bfSteps > 30){
+
+        //watch in the list for the best field an move it to the openlist
+        Field* bestOfBfSearch = bfSearchList.back();
+        bestOfBfSearch->parent = currentSolution;
+        bestOfBfSearch->g = steps;
+        openList.push_back(bestOfBfSearch);
+
+        // move the other fields to the visited list
+        for(list<Field*>::iterator listIterator = bfSearchList.begin(); listIterator != bfSearchList.end(); ++listIterator){
+            visitedList.push_back(*listIterator);
+        }
+
+        return false;
+    }
+
     // if you are at the end of the list return
-    if(currentField == openBFSearchList.back()){
+    if(currentField == bfSearchList.back()){
+        // move it in the openlist
+
+        // the parent of this neighbour is the current field
+        currentField->parent = currentSolution;
+        currentField->g = steps;
+        openList.push_back(currentField);
+
+        //                    n->dir_180->dir_180->parent = n;
+        //                    // set g value of neighbour
+        //                    n->dir_180->dir_180->g = steps;
         return true;
     }
 
     Field* nextField;
     // find the next Field in NodeList
-    for(list<Field*>::iterator listIterator = openBFSearchList.begin(); listIterator != openBFSearchList.end(); ++listIterator){
+    for(list<Field*>::iterator listIterator = bfSearchList.begin(); listIterator != bfSearchList.end(); ++listIterator){
         if(currentField == *listIterator){
             ++listIterator;
             nextField = *listIterator;
             break;
         }
     }
+    // move the next field to the visitedList
+    visitedList.push_back(nextField);
 
+    //increment bfSteps counter (if>14 break)
+    bfSteps++;
     // recursive function call with the next Field in the NodeList
     stepBFSearch(nextField);
     return true;
@@ -275,25 +307,93 @@ bool SearchAlgorithm::stepBFSearch(Field *currentField)
 bool SearchAlgorithm::tryToJump(Field *currentField)
 {
 
-    // if i can jump in dir_0 add this field to the openBFSearch list
-    Field* nextField = currentField->dir_0;
+    Field* nextField;
     Field* sec_nextField;
-    if(nextField != 0){
-        sec_nextField = currentField->dir_0->dir_0;
+
+    // if i can jump in dir_0 add this field to the bfSearchList
+    if(currentField->dir_0 != 0){
+        nextField = currentField->dir_0;
+        if(currentField->dir_0->dir_0 != 0){
+            sec_nextField = currentField->dir_0->dir_0;
+            // if i can jump in this direction add the sec_nextField to the bfSearchList
+            if(nextField->data != '.' && sec_nextField->data == '.'){
+                if(!isInBFSearchList(sec_nextField)){
+                    bfSearchList.push_back(sec_nextField);
+                }
+            }
+        }
     }
 
-//        // if controllNeighbour returns true we can add this neighbour to the open list
-//        if(nextField != 0){
-//            if(!isInOpenList(nextField) && !isInVisitedList(nextField)){
-//                // is not in open list and not in visited list
-//                // now check if this field is occupied, if it is occupied, controll the next field in this direction if it exists
-//                if(isOccupied(n->dir_0) && n->dir_0->dir_0 != 0){
-//                    // if this is true we can jump and we add the next field to the openlist and set parent and g value
-//                    if(!isInOpenList(n->dir_0->dir_0) && !isInVisitedList(n->dir_0->dir_0) && !(isOccupied(n->dir_0->dir_0))){
-//                        // make a breath first search and try to jump as far as you can
+    // if i can jump in dir_60 add this field to the bfSearchList
+    if(currentField->dir_60 != 0){
+        nextField = currentField->dir_60;
+        if(currentField->dir_60->dir_60 != 0){
+            sec_nextField = currentField->dir_60->dir_60;
+            // if i can jump in this direction add the sec_nextField to the bfSearchList
+            if(nextField->data != '.' && sec_nextField->data == '.'){
+                if(!isInBFSearchList(sec_nextField)){
+                    bfSearchList.push_back(sec_nextField);
+                }
+            }
+        }
+    }
 
+    // if i can jump in dir_120 add this field to the bfSearchList
+    if(currentField->dir_120 != 0){
+        nextField = currentField->dir_120;
+        if(currentField->dir_120->dir_120 != 0){
+            sec_nextField = currentField->dir_120->dir_120;
+            // if i can jump in this direction add the sec_nextField to the bfSearchList
+            if(nextField->data != '.' && sec_nextField->data == '.'){
+                if(!isInBFSearchList(sec_nextField)){
+                    bfSearchList.push_back(sec_nextField);
+                }
+            }
+        }
+    }
 
+    // if i can jump in dir_120 add this field to the bfSearchList
+    if(currentField->dir_180 != 0){
+        nextField = currentField->dir_180;
+        if(currentField->dir_180->dir_180 != 0){
+            sec_nextField = currentField->dir_180->dir_180;
+            // if i can jump in this direction add the sec_nextField to the bfSearchList
+            if(nextField->data != '.' && sec_nextField->data == '.'){
+                if(!isInBFSearchList(sec_nextField)){
+                    bfSearchList.push_back(sec_nextField);
+                }
+            }
+        }
+    }
 
+    // if i can jump in dir_120 add this field to the bfSearchList
+    if(currentField->dir_240 != 0){
+        nextField = currentField->dir_240;
+        if(currentField->dir_240->dir_240 != 0){
+            sec_nextField = currentField->dir_240->dir_240;
+            // if i can jump in this direction add the sec_nextField to the bfSearchList
+            if(nextField->data != '.' && sec_nextField->data == '.'){
+                if(!isInBFSearchList(sec_nextField)){
+                    bfSearchList.push_back(sec_nextField);
+                }
+            }
+        }
+    }
+
+    // if i can jump in dir_120 add this field to the bfSearchList
+    if(currentField->dir_300 != 0){
+        nextField = currentField->dir_300;
+        if(currentField->dir_300->dir_300 != 0){
+            sec_nextField = currentField->dir_300->dir_300;
+            // if i can jump in this direction add the sec_nextField to the bfSearchList
+            if(nextField->data != '.' && sec_nextField->data == '.'){
+                if(!isInBFSearchList(sec_nextField)){
+                    bfSearchList.push_back(sec_nextField);
+                }
+            }
+        }
+    }
+    bfSearchList.sort(bfSearchQuickSortCompareFunction);
 
 }
 
@@ -303,111 +403,11 @@ bool SearchAlgorithm::quickSortCompareFunction(Field *a, Field *b)
     return (a->getF() > b->getF());
 }
 
-
-/*
-  Methode: setHeuristicsCircular
-  Arguments: (Field*) goalField
-  Description:
-        Set value h in every Field (distance depending on goal field)
-  Return: void
-  by Lukas Holzinger @ 12.11.2012, 18:00
-  */
-void SearchAlgorithm::setHeuristicsCircular(){
-    Iterator iterator(gameBoard);
-    int counter_x = 0;
-    int counter_y = 0;
-    bool control = 0;
-    int pri_angle = 0;
-    int sec_angle = 0;
-
-
-    /*    iterator.resetToFirst();
-    while(iterator.current->number < 121){
-        iterator.current->h=0;
-        ++iterator;
-    }
-*/
-    // go to the goalfield with the iterator
-    iterator.resetToFirst();
-    while(iterator.current->number != goal->number){
-
-        ++iterator;
-    }
-
-    // set goalfield heuristic value(h) to 0
-    iterator.current->h = 0;
-
-    // go throw all 6 possible neighbor nodes
-    for(int i=0; i < 6; i++){
-
-        pri_angle = i*60;               // Primary angle
-        sec_angle = (60+pri_angle)%360; // secondary angle
-
-        iterator.getPossibleDirections();
-
-
-        // do while as long as sec_angle direction is possible
-        do {
-
-            if(iterator.getPossibleDirectionsControl(pri_angle)){
-                // iterator could go in pri_angle direction
-                // iterator goes throw the nodes in pimary angle direction und set the HV
-                while(!iterator.go_dir(pri_angle)){
-                    counter_x++;
-                    iterator.current->h=(counter_x+counter_y);
-                }
-            }
-
-
-            while(counter_x != 0){
-                iterator.getPossibleDirections();
-
-                if(iterator.getPossibleDirectionsControl(sec_angle) && control == 0){
-                    // if the there is a neighbor node in sec_angle direction and it's
-                    // the first round (control == FALSE) then go into sec_direction, set
-                    // HV and go back
-                    while(!iterator.go_dir(sec_angle)){
-                        counter_y++;
-                        iterator.current->h = (counter_x+counter_y);
-                    }
-                    while(counter_y != 0){
-                        counter_y--;
-                        iterator.go_dir((180+sec_angle)%360);
-
-                    }
-
-                }
-                // go in pri_angle direction one step back
-                iterator.go_dir((180+pri_angle)%360);
-                counter_x--;
-
-            }
-            // set after the first round (control == TRUE)
-            control = 1;
-
-
-            // Go in the sec_angle direction if possible
-            iterator.getPossibleDirections();
-            if(iterator.getPossibleDirectionsControl(sec_angle)){
-                iterator.go_dir(sec_angle);
-                counter_y++;
-            }
-
-        } while(iterator.getPossibleDirectionsControl(sec_angle));
-
-
-        // go back home
-        while(counter_y != 0){
-            iterator.go_dir((180+sec_angle)%360);
-            counter_y--;
-        }
-        // reset control to FALSE
-        control = 0;
-    }
+bool SearchAlgorithm::bfSearchQuickSortCompareFunction(Field *a, Field *b)
+{
+    return (a->h > b->h);
 
 }
-
-
 
 void SearchAlgorithm::setStartAndGoal(){
 
@@ -472,24 +472,8 @@ Field *SearchAlgorithm::getNextBestField()
     if(openList.empty()){
         cout << "--> end of search! no possibility left" << endl << endl;
 
-        //shortestPath.clear();
-
-//        visitedList.sort(quickSortCompareFunction);
-//        Field* bestField = openList.back();
-//        shortestPath.push_front(bestField);
-//        while(bestField!= start){
-//            bestField = bestField->parent;
-//            bestField->data = '*';
-//            shortestPath.push_front(bestField);
-//        }
-
-
         cout << "GoalField = " << goal->number << endl;
         cout << "Best path as far as i can: ";
-//        list<Field*>::iterator it;
-//        for(it = shortestPath.begin(); it != shortestPath.end(); it++){
-//            cout << **it << "->" ;
-//        }
 
         // safe tha path from the best visited list field to start and take that for the best path
         noWayToGoal = true;
@@ -577,12 +561,13 @@ void SearchAlgorithm::searchStep()
                 if(!isInOpenList(n->dir_0->dir_0) && !isInVisitedList(n->dir_0->dir_0) && !(isOccupied(n->dir_0->dir_0))){
                     // make a breath first search and try to jump as far as you can
 
-
-                    openList.push_back(n->dir_0->dir_0);
-                    // the parent of this neighbour is the current field
-                    n->dir_0->dir_0->parent = n;
-                    // set g value of neighbour
-                    n->dir_0->dir_0->g = steps;
+                    bfSteps = 0;
+                    startBFSearch(n);
+                    //                    openList.push_back(n->dir_0->dir_0);
+                    //                    // the parent of this neighbour is the current field
+                    //                    n->dir_0->dir_0->parent = n;
+                    //                    // set g value of neighbour
+                    //                    n->dir_0->dir_0->g = steps;
                 }
             }else{
                 openList.push_back(n->dir_0);
@@ -601,11 +586,14 @@ void SearchAlgorithm::searchStep()
             if(isOccupied(n->dir_60) && n->dir_60->dir_60 != 0){
                 // if this is true we can jump and we add the next field to the openlist and set parent and g value
                 if(!isInOpenList(n->dir_60->dir_60) && !isInVisitedList(n->dir_60->dir_60) && !(isOccupied(n->dir_60->dir_60))){
-                    openList.push_back(n->dir_60->dir_60);
-                    // the parent of this neighbour is the current field
-                    n->dir_60->dir_60->parent = n;
-                    // set g value of neighbour
-                    n->dir_60->dir_60->g = steps;
+                    bfSteps = 0;
+                    startBFSearch(n);
+
+                    //                    openList.push_back(n->dir_60->dir_60);
+                    //                    // the parent of this neighbour is the current field
+                    //                    n->dir_60->dir_60->parent = n;
+                    //                    // set g value of neighbour
+                    //                    n->dir_60->dir_60->g = steps;
                 }
             }else{
                 openList.push_back(n->dir_60);
@@ -624,11 +612,13 @@ void SearchAlgorithm::searchStep()
             if(isOccupied(n->dir_120) && n->dir_120->dir_120 != 0){
                 // if this is true we can jump and we add the next field to the openlist and set parent and g value
                 if(!isInOpenList(n->dir_120->dir_120) && !isInVisitedList(n->dir_120->dir_120) && !(isOccupied(n->dir_120->dir_120))){
-                    openList.push_back(n->dir_120->dir_120);
-                    // the parent of this neighbour is the current field
-                    n->dir_120->dir_120->parent = n;
-                    // set g value of neighbour
-                    n->dir_120->dir_120->g = steps;
+                    bfSteps = 0;
+                    startBFSearch(n);
+                    //                    openList.push_back(n->dir_120->dir_120);
+                    //                    // the parent of this neighbour is the current field
+                    //                    n->dir_120->dir_120->parent = n;
+                    //                    // set g value of neighbour
+                    //                    n->dir_120->dir_120->g = steps;
                 }
             }else{
                 openList.push_back(n->dir_120);
@@ -647,11 +637,13 @@ void SearchAlgorithm::searchStep()
             if(isOccupied(n->dir_180) && n->dir_180->dir_180 != 0){
                 // if this is true we can jump and we add the next field to the openlist and set parent and g value
                 if(!isInOpenList(n->dir_180->dir_180) && !isInVisitedList(n->dir_180->dir_180) && !(isOccupied(n->dir_180->dir_180))){
-                    openList.push_back(n->dir_180->dir_180);
-                    // the parent of this neighbour is the current field
-                    n->dir_180->dir_180->parent = n;
-                    // set g value of neighbour
-                    n->dir_180->dir_180->g = steps;
+                    bfSteps = 0;
+                    startBFSearch(n);
+                    //                    openList.push_back(n->dir_180->dir_180);
+                    //                    // the parent of this neighbour is the current field
+                    //                    n->dir_180->dir_180->parent = n;
+                    //                    // set g value of neighbour
+                    //                    n->dir_180->dir_180->g = steps;
                 }
             }else{
                 openList.push_back(n->dir_180);
@@ -670,11 +662,14 @@ void SearchAlgorithm::searchStep()
             if(isOccupied(n->dir_240) && n->dir_240->dir_240 != 0){
                 // if this is true we can jump and we add the next field to the openlist and set parent and g value
                 if(!isInOpenList(n->dir_240->dir_240) && !isInVisitedList(n->dir_240->dir_240) && !(isOccupied(n->dir_240->dir_240))){
-                    openList.push_back(n->dir_240->dir_240);
-                    // the parent of this neighbour is the current field
-                    n->dir_240->dir_240->parent = n;
-                    // set g value of neighbour
-                    n->dir_240->dir_240->g = steps;
+                    bfSteps = 0;
+                    startBFSearch(n);
+
+                    //                    openList.push_back(n->dir_240->dir_240);
+                    //                    // the parent of this neighbour is the current field
+                    //                    n->dir_240->dir_240->parent = n;
+                    //                    // set g value of neighbour
+                    //                    n->dir_240->dir_240->g = steps;
                 }
             }else{
                 openList.push_back(n->dir_240);
@@ -693,11 +688,13 @@ void SearchAlgorithm::searchStep()
             if(isOccupied(n->dir_300) && n->dir_300->dir_300 != 0){
                 // if this is true we can jump and we add the next field to the openlist and set parent and g value
                 if(!isInOpenList(n->dir_300->dir_300) && !isInVisitedList(n->dir_300->dir_300) && !(isOccupied(n->dir_300->dir_300))){
-                    openList.push_back(n->dir_300->dir_300);
-                    // the parent of this neighbour is the current field
-                    n->dir_300->dir_300->parent = n;
-                    // set g value of neighbour
-                    n->dir_300->dir_300->g = steps;
+                    bfSteps = 0;
+                    startBFSearch(n);
+                    //                    openList.push_back(n->dir_300->dir_300);
+                    //                    // the parent of this neighbour is the current field
+                    //                    n->dir_300->dir_300->parent = n;
+                    //                    // set g value of neighbour
+                    //                    n->dir_300->dir_300->g = steps;
                 }
             }else{
                 openList.push_back(n->dir_300);
@@ -717,12 +714,6 @@ bool SearchAlgorithm::isInOpenList(Field *directionField)
 {
     for(list<Field*>::iterator listIterator = openList.begin(); listIterator != openList.end(); ++listIterator){
         if(directionField == *listIterator){
-            Field* x = *listIterator;
-            //cout << directionField->number << "allready in openlist with g =" << directionField->g << " current g = " << currentSolution->g << endl;
-            // check if the g value of the parent from the existing field in the openlist is better than the current
-            if(x->parent->g > currentSolution->g){
-                x->parent = currentSolution;
-            }
             return true;
         }
     }
@@ -732,6 +723,16 @@ bool SearchAlgorithm::isInOpenList(Field *directionField)
 bool SearchAlgorithm::isInVisitedList(Field *directionField)
 {
     for(list<Field*>::iterator listIterator = visitedList.begin(); listIterator != visitedList.end(); ++listIterator){
+        if(directionField == *listIterator){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool SearchAlgorithm::isInBFSearchList(Field *directionField)
+{
+    for(list<Field*>::iterator listIterator = bfSearchList.begin(); listIterator != bfSearchList.end(); ++listIterator){
         if(directionField == *listIterator){
             return true;
         }

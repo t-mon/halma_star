@@ -29,7 +29,7 @@
 #include <vector>
 #include <list>
 #include <time.h>
-#define DEBUG_HEURISTIC 1
+#define DEBUG_HEURISTIC 0
 
 using namespace std;
 
@@ -39,17 +39,39 @@ class Board;
 class SearchAlgorithm
 {
 public:
-    SearchAlgorithm(Board &board, Field* startField, Field* goalField):gameBoard(board),start(startField), goal(goalField){goalReached = false; noWayToGoal = false;}
+    SearchAlgorithm(Board &board, Field* startField, Field* goalField):gameBoard(board),start(startField), goal(goalField){goalReached = false; noWayToGoal = false; bfSteps = 0;}
 
     Field* getGoalField();
     Field* getStartField();
 
     static bool quickSortCompareFunction(Field *a, Field *b);
+    static bool bfSearchQuickSortCompareFunction(Field *a, Field *b);
 
-    // (OLD) calculates the heuristic with circles starting by the goal field
-    void setHeuristicsCircular();
+    // method that searches the path form start to goal and safes it into the shortest path list
+    void findPath();
+
+    void print();           // print the star with heuristic values
+    void setRandomStones(int max_stones =13); // set Random Stones into the field
+
+
+private:
     // calculates the heuristic with circles start by the goal field
     void startHeuristicsCircular();
+    bool setHeuristicsCircular(Field* currentField);
+    void setNeighbourHeuristic(Field* currentField);
+
+    bool isInOpenList(Field* directionField);
+    bool isInVisitedList(Field* directionField);
+    bool isInBFSearchList(Field* directionField);
+    bool isOccupied(Field* directionField);
+
+
+    void startBFSearch(Field* currentField);
+    bool stepBFSearch(Field * currentField);
+    bool tryToJump(Field* currentField);
+
+
+
 
     // inizialize start an goal fields
     void setStartAndGoal();
@@ -60,30 +82,14 @@ public:
     // this method returns the neighbour with the best f value
     Field* getNextBestField();
     void searchStep();
-    //bool controllNeighbour(Field* directionField);
-    bool isInOpenList(Field* directionField);
-    bool isInVisitedList(Field* directionField);
-    bool isOccupied(Field* directionField);
-
-    // method that searches the path form start to goal and safes it into the shortest path list
-    void findPath();
-
-    void print();           // print the star with heuristic values
-    void setRandomStones(int max_stones =13); // set Random Stones into the field
-
-
-private:
-    bool setHeuristicsCircular2(Field* currentField);
-    void setNeighbourHeuristic(Field* currentField);
-
-    void startBFSearch(Field* currentField);
-    bool stepBFSearch(Field * currentField);
-    bool tryToJump(Field* currentField);
 
     Board &gameBoard;       // the current gameboard situation
 
     // counter for the steps already made
     int steps;
+
+    // step counter for the bfSearch
+    int bfSteps;
 
     bool goalReached;
     bool noWayToGoal;
@@ -95,12 +101,10 @@ private:
     list <Field*> openList;
     list <Field*> visitedList;
     list <Field*> shortestPath;
+    list <Field*> bfSearchList;     // list for multiple jump
 
     vector <Field*> NodeList;           // List for heuristic
 
-    list <Field*> openBFSearchList;     // list for multiple jump
-    list <Field*> visitedBFSearchList;  // list for multiple jump
-    list <Field*> bestJumpPathBFSearch; // list where is the path for the best jumpseries
 
 };
 

@@ -21,7 +21,8 @@ GameEngine::GameEngine()
     gameBoard.print();
     while(1){
         playerOne->doTurnMove();
-
+        char a;
+        cin >> a;
     }
 
 

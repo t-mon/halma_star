@@ -254,7 +254,7 @@ bool SearchAlgorithm::stepBFSearch(Field *currentField)
     // go throw the neighbourfields and try to jump
     tryToJump(currentField);
 
-    if(bfSteps > 30){
+    if(bfSteps > 15){
 
         //watch in the list for the best field an move it to the openlist
         Field* bestOfBfSearch = bfSearchList.back();
@@ -417,11 +417,12 @@ void SearchAlgorithm::setStartAndGoal(){
     // inizialize all g values
     Iterator iterator(gameBoard);
     iterator.resetToFirst();
-    iterator.current->g = 100;
-    while(iterator.getCurrentNumber() != 121){
-        ++iterator;
+    while(iterator.getCurrentField() != gameBoard.getLast()){
         iterator.current->g = 100;
+        ++iterator;
     }
+    iterator.current->g = 100;
+
 
     startHeuristicsCircular();
 
@@ -506,6 +507,7 @@ void SearchAlgorithm::searchStep()
 {
     // loock in the openList for the current best field,
     // remove it from the open list an put it in the visited list
+    bfSearchList.clear();
 
     Field* n = getNextBestField();
     //n->g = steps;
@@ -534,7 +536,7 @@ void SearchAlgorithm::searchStep()
         for(it = shortestPath.begin(); it != shortestPath.end(); it++){
             cout << **it << "->" ;
         }
-
+        cout << endl;
         goalReached = true;
         return;
     }
@@ -725,138 +727,7 @@ void SearchAlgorithm::searchStep()
             }
         }
     }
-    //    // if controllNeighbour returns true we can add this neighbour to the open list
-    //    if(n->dir_60 != 0){
-    //        if(!isInOpenList(n->dir_60) && !isInVisitedList(n->dir_60)){
-    //            // is not in open list and not in visited list
-    //            // now check if this field is occupied, if it is occupied, controll the next field in this direction if it exists
-    //            if(isOccupied(n->dir_60)){
-    //                if(n->dir_60->dir_60 != 0){                // if this is true we can jump and we add the next field to the openlist and set parent and g value
-    //                    if(!isInOpenList(n->dir_60->dir_60) && !isInVisitedList(n->dir_60->dir_60) && !(isOccupied(n->dir_60->dir_60))){
-    //                        bfSteps = 0;
-    //                        startBFSearch(n);
 
-    //                        //                    openList.push_back(n->dir_60->dir_60);
-    //                        //                    // the parent of this neighbour is the current field
-    //                        //                    n->dir_60->dir_60->parent = n;
-    //                        //                    // set g value of neighbour
-    //                        //                    n->dir_60->dir_60->g = steps;
-    //                    }
-    //                }
-    //            }else{
-    //                openList.push_back(n->dir_60);
-    //                // the parent of this neighbour is the current field
-    //                n->dir_60->parent = n;
-    //                // set g value of neighbour
-    //                n->dir_60->g = steps;
-    //            }
-    //        }
-    //    }
-    //    // if controllNeighbour returns true we can add this neighbour to the open list
-    //    if(n->dir_120 != 0){
-    //        if(!isInOpenList(n->dir_120) && !isInVisitedList(n->dir_120)){
-    //            // is not in open list and not in visited list
-    //            // now check if this field is occupied, if it is occupied, controll the next field in this direction if it exists
-    //            if(isOccupied(n->dir_120)){
-    //                if(n->dir_120->dir_120 != 0){                // if this is true we can jump and we add the next field to the openlist and set parent and g value
-    //                    if(!isInOpenList(n->dir_120->dir_120) && !isInVisitedList(n->dir_120->dir_120) && !(isOccupied(n->dir_120->dir_120))){
-    //                        bfSteps = 0;
-    //                        startBFSearch(n);
-    //                        //                    openList.push_back(n->dir_120->dir_120);
-    //                        //                    // the parent of this neighbour is the current field
-    //                        //                    n->dir_120->dir_120->parent = n;
-    //                        //                    // set g value of neighbour
-    //                        //                    n->dir_120->dir_120->g = steps;
-    //                    }
-    //                }
-    //            }else{
-    //                openList.push_back(n->dir_120);
-    //                // the parent of this neighbour is the current field
-    //                n->dir_120->parent = n;
-    //                // set g value of neighbour
-    //                n->dir_120->g = steps;
-    //            }
-    //        }
-    //    }
-    //    // if controllNeighbour returns true we can add this neighbour to the open list
-    //    if(n->dir_180 != 0){
-    //        if(!isInOpenList(n->dir_180) && !isInVisitedList(n->dir_180)){
-    //            // is not in open list and not in visited list
-    //            // now check if this field is occupied, if it is occupied, controll the next field in this direction if it exists
-    //            if(isOccupied(n->dir_180)){
-    //                if(n->dir_180->dir_180 != 0){                // if this is true we can jump and we add the next field to the openlist and set parent and g value
-    //                    if(!isInOpenList(n->dir_180->dir_180) && !isInVisitedList(n->dir_180->dir_180) && !(isOccupied(n->dir_180->dir_180))){
-    //                        bfSteps = 0;
-    //                        startBFSearch(n);
-    //                        //                    openList.push_back(n->dir_180->dir_180);
-    //                        //                    // the parent of this neighbour is the current field
-    //                        //                    n->dir_180->dir_180->parent = n;
-    //                        //                    // set g value of neighbour
-    //                        //                    n->dir_180->dir_180->g = steps;
-    //                    }
-    //                }
-    //            }else{
-    //                openList.push_back(n->dir_180);
-    //                // the parent of this neighbour is the current field
-    //                n->dir_180->parent = n;
-    //                // set g value of neighbour
-    //                n->dir_180->g = steps;
-    //            }
-    //        }
-    //    }
-    //    // if controllNeighbour returns true we can add this neighbour to the open list
-    //    if(n->dir_240 != 0){
-    //        if(!isInOpenList(n->dir_240) && !isInVisitedList(n->dir_240)){
-    //            // is not in open list and not in visited list
-    //            // now check if this field is occupied, if it is occupied, controll the next field in this direction if it exists
-    //            if(isOccupied(n->dir_240)){
-    //                if(n->dir_240->dir_240 != 0){                // if this is true we can jump and we add the next field to the openlist and set parent and g value
-    //                    if(!isInOpenList(n->dir_240->dir_240) && !isInVisitedList(n->dir_240->dir_240) && !(isOccupied(n->dir_240->dir_240))){
-    //                        bfSteps = 0;
-    //                        startBFSearch(n);
-
-    //                        //                    openList.push_back(n->dir_240->dir_240);
-    //                        //                    // the parent of this neighbour is the current field
-    //                        //                    n->dir_240->dir_240->parent = n;
-    //                        //                    // set g value of neighbour
-    //                        //                    n->dir_240->dir_240->g = steps;
-    //                    }
-    //                }
-    //            }else{
-    //                openList.push_back(n->dir_240);
-    //                // the parent of this neighbour is the current field
-    //                n->dir_240->parent = n;
-    //                // set g value of neighbour
-    //                n->dir_240->g = steps;
-    //            }
-    //        }
-    //    }
-    //    // if controllNeighbour returns true we can add this neighbour to the open list
-    //    if(n->dir_300 != 0){
-    //        if(!isInOpenList(n->dir_300) && !isInVisitedList(n->dir_300)){
-    //            // is not in open list and not in visited list
-    //            // now check if this field is occupied, if it is occupied, controll the next field in this direction if it exists
-    //            if(isOccupied(n->dir_300)){
-    //                if(n->dir_300->dir_300 != 0){                // if this is true we can jump and we add the next field to the openlist and set parent and g value
-    //                    if(!isInOpenList(n->dir_300->dir_300) && !isInVisitedList(n->dir_300->dir_300) && !(isOccupied(n->dir_300->dir_300))){
-    //                        bfSteps = 0;
-    //                        startBFSearch(n);
-    //                        //                    openList.push_back(n->dir_300->dir_300);
-    //                        //                    // the parent of this neighbour is the current field
-    //                        //                    n->dir_300->dir_300->parent = n;
-    //                        //                    // set g value of neighbour
-    //                        //                    n->dir_300->dir_300->g = steps;
-    //                    }
-    //                }
-    //            }else{
-    //                openList.push_back(n->dir_300);
-    //                // the parent of this neighbour is the current field
-    //                n->dir_300->parent = n;
-    //                // set g value of neighbour
-    //                n->dir_300->g = steps;
-    //            }
-    //        }
-    //    }
     // now we have controlled every neighbour of the current field an added all valid neighbours to the open list
     // the current field is the parent of all valid neigbours
 }

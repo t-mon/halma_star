@@ -10,6 +10,12 @@ void Iterator::resetToFirst(){
     current = gameBoard.first;
 }
 
+void Iterator::resetToLast()
+{
+    current = gameBoard.last;
+    previous = current->previous;
+}
+
 // insert a new field after the actual field in the board and make the previous and next connection
 void Iterator::insert(int numField, char dataOfField, Field* previousField, Field* nextField, Field* dir_0_Field, Field* dir_60_Field, Field* dir_120_Field, Field* dir_180_Field, Field* dir_240_Field, Field* dir_300_Field){
     Field *p = gameBoard.newField(numField,dataOfField,previousField,nextField, dir_0_Field, dir_60_Field, dir_120_Field, dir_180_Field, dir_240_Field, dir_300_Field);
@@ -49,19 +55,19 @@ int Iterator::operator ++()
 // move to the next field with the iterator (current field data - 1)
 int Iterator::operator --()
 {
-    if (current == NULL)		// reset current pointer
-        if (previous == NULL)
+    if (current == 0){		// reset current pointer
+        if (previous == 0){
             current = gameBoard.first;
-        else
+        }else{
             current = previous->next;
-    else				// move current pointer backwards
-    {
+        }
+    }else{
         previous = previous->previous;
         current = current->previous;
     }
     return (current != NULL);
-}
 
+}
 
 
 // get informations of the field and neighborfields
@@ -151,27 +157,27 @@ void Iterator::getPossibleDirections(){
         dir_300_possible = true;
     }
 
-//    // print out which possibilitys i have to move from current field
-//    cout << "possible move directions from current field: " << endl;
-//    if(dir_0_possible){
-//        cout << "\t-> direction 0" << endl;
-//    }
-//    if(dir_60_possible){
-//        cout << "\t-> direction 60" << endl;
-//    }
-//    if(dir_120_possible){
-//        cout << "\t-> direction 120" << endl;
-//    }
-//    if(dir_180_possible){
-//        cout << "\t-> direction 180" << endl;
-//    }
-//    if(dir_240_possible){
-//        cout << "\t-> direction 240" << endl;
-//    }
-//    if(dir_300_possible){
-//        cout << "\t-> direction 300" << endl;
-//    }
-//    cout << endl;
+    //    // print out which possibilitys i have to move from current field
+    //    cout << "possible move directions from current field: " << endl;
+    //    if(dir_0_possible){
+    //        cout << "\t-> direction 0" << endl;
+    //    }
+    //    if(dir_60_possible){
+    //        cout << "\t-> direction 60" << endl;
+    //    }
+    //    if(dir_120_possible){
+    //        cout << "\t-> direction 120" << endl;
+    //    }
+    //    if(dir_180_possible){
+    //        cout << "\t-> direction 180" << endl;
+    //    }
+    //    if(dir_240_possible){
+    //        cout << "\t-> direction 240" << endl;
+    //    }
+    //    if(dir_300_possible){
+    //        cout << "\t-> direction 300" << endl;
+    //    }
+    //    cout << endl;
 }
 
 /*

@@ -16,6 +16,7 @@ public:
     Iterator(Board &board):gameBoard(board){resetToFirst();}
     // reset the iterator to the first field (field number 1)
     void resetToFirst();
+    void resetToLast();
 
     // insert a new field and make the previous and next connection for it
     void insert(int numField, char dataOfField, Field* previousField, Field* nextField, Field* dir_0_Field, Field* dir_60_Field, Field* dir_120_Field, Field* dir_180_Field, Field* dir_240_Field, Field* dir_300_Field);

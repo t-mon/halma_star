@@ -22,6 +22,7 @@ private:
     Board &m_board;
     char m_playerSymbole;
 
+    Field* setGoalField(Board &gameBoard);
 
     list <move> resultsList;
 

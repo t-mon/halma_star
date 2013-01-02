@@ -39,7 +39,7 @@ class Board;
 class SearchAlgorithm
 {
 public:
-    SearchAlgorithm(Board &board, Field* startField, Field* goalField):gameBoard(board),start(startField), goal(goalField){goalReached = false; noWayToGoal = false; bfSteps = 0;}
+    SearchAlgorithm(Board &board, Field* startField, Field* goalField):gameBoard(board),start(startField), goal(goalField){goalReached = false; noWayToGoal = false; bfSteps = 0; steps = 0; inizializeLists();}
 
     Field* getGoalField();
     Field* getStartField();
@@ -48,7 +48,7 @@ public:
     static bool bfSearchQuickSortCompareFunction(Field *a, Field *b);
 
     // method that searches the path form start to goal and safes it into the shortest path list
-    void findPath();
+    Field *findPath();
 
     void print();           // print the star with heuristic values
     void setRandomStones(int max_stones =13); // set Random Stones into the field
@@ -68,7 +68,7 @@ private:
 
     void startBFSearch(Field* currentField);
     bool stepBFSearch(Field * currentField);
-    bool tryToJump(Field* currentField);
+    void tryToJump(Field* currentField);
 
 
 

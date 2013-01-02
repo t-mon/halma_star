@@ -45,6 +45,16 @@ bool Board::isEmpty(){
     return (first == 0);
 }
 
+Field *Board::getFirst()
+{
+    return first;
+}
+
+Field *Board::getLast()
+{
+    return last;
+}
+
 // prints the current board situation
 void Board::print(){
     // go through the list

@@ -37,3 +37,8 @@ double Field::getF(){
     return g+h;
 }
 
+int Field::getNumber()
+{
+    return number;
+}
+

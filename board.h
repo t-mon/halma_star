@@ -17,6 +17,8 @@ public:
     Board();
     ~Board();
     bool isEmpty();         // returns true if the board is emtpty
+    Field* getFirst();
+    Field* getLast();
 
     //CHANGE
     void print();           // prints the hole field to stdout

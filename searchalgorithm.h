@@ -97,6 +97,7 @@ private:
     Field* currentSolution; // the field which is currently the best solution
     Field* start;           // the start field from which the algorithm starts
     Field* goal;            // the goal field where the algorithm wants to go
+    Field* m_BFstartField;
 
     list <Field*> openList;
     list <Field*> visitedList;

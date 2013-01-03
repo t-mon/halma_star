@@ -237,6 +237,7 @@ void SearchAlgorithm::startBFSearch(Field *currentField)
     bfSteps = 0;
     // reset the NodeList und clear it
     bfSearchList.clear();
+    m_BFstartField = currentField;
 
     // Push goalfield to the end of the List and set h to zero
     bfSearchList.push_front(currentField);
@@ -252,13 +253,15 @@ bool SearchAlgorithm::stepBFSearch(Field *currentField)
 
 
     // go throw the neighbourfields and try to jump
+    // if i can jump add that neigbour to the list end
     tryToJump(currentField);
 
+    // this ends a endless loop search
     if(bfSteps > 15){
-
+        bfSearchList.sort(bfSearchQuickSortCompareFunction);
         //watch in the list for the best field an move it to the openlist
         Field* bestOfBfSearch = bfSearchList.back();
-        bestOfBfSearch->parent = visitedList.front();
+        bestOfBfSearch->parent = m_BFstartField;
         bestOfBfSearch->g = steps;
         openList.push_back(bestOfBfSearch);
 
@@ -267,21 +270,16 @@ bool SearchAlgorithm::stepBFSearch(Field *currentField)
             visitedList.push_back(*listIterator);
         }
 
-        return false;
+        return true;
     }
-
     // if you are at the end of the list return
     if(currentField == bfSearchList.back()){
         // move it in the openlist
 
         // the parent of this neighbour is the current field
-        currentField->parent = visitedList.front();
+        currentField->parent = m_BFstartField;
         currentField->g = steps;
         openList.push_back(currentField);
-
-        //                    n->dir_180->dir_180->parent = n;
-        //                    // set g value of neighbour
-        //                    n->dir_180->dir_180->g = steps;
         return true;
     }
 
@@ -318,6 +316,7 @@ void SearchAlgorithm::tryToJump(Field *currentField)
             // if i can jump in this direction add the sec_nextField to the bfSearchList
             if(nextField->data != '.' && sec_nextField->data == '.'){
                 if(!isInBFSearchList(sec_nextField) && !isInVisitedList(sec_nextField)){
+                    sec_nextField->parent = currentField;
                     bfSearchList.push_back(sec_nextField);
                 }
             }
@@ -332,6 +331,7 @@ void SearchAlgorithm::tryToJump(Field *currentField)
             // if i can jump in this direction add the sec_nextField to the bfSearchList
             if(nextField->data != '.' && sec_nextField->data == '.'){
                 if(!isInBFSearchList(sec_nextField) && !isInVisitedList(sec_nextField)){
+                    sec_nextField->parent = currentField;
                     bfSearchList.push_back(sec_nextField);
                 }
             }
@@ -346,13 +346,14 @@ void SearchAlgorithm::tryToJump(Field *currentField)
             // if i can jump in this direction add the sec_nextField to the bfSearchList
             if(nextField->data != '.' && sec_nextField->data == '.'){
                 if(!isInBFSearchList(sec_nextField) && !isInVisitedList(sec_nextField)){
+                    sec_nextField->parent = currentField;
                     bfSearchList.push_back(sec_nextField);
                 }
             }
         }
     }
 
-    // if i can jump in dir_120 add this field to the bfSearchList
+    // if i can jump in dir_180 add this field to the bfSearchList
     if(currentField->dir_180 != 0){
         nextField = currentField->dir_180;
         if(currentField->dir_180->dir_180 != 0){
@@ -360,13 +361,14 @@ void SearchAlgorithm::tryToJump(Field *currentField)
             // if i can jump in this direction add the sec_nextField to the bfSearchList
             if(nextField->data != '.' && sec_nextField->data == '.'){
                 if(!isInBFSearchList(sec_nextField) && !isInVisitedList(sec_nextField)){
+                    sec_nextField->parent = currentField;
                     bfSearchList.push_back(sec_nextField);
                 }
             }
         }
     }
 
-    // if i can jump in dir_120 add this field to the bfSearchList
+    // if i can jump in dir_240 add this field to the bfSearchList
     if(currentField->dir_240 != 0){
         nextField = currentField->dir_240;
         if(currentField->dir_240->dir_240 != 0){
@@ -374,13 +376,14 @@ void SearchAlgorithm::tryToJump(Field *currentField)
             // if i can jump in this direction add the sec_nextField to the bfSearchList
             if(nextField->data != '.' && sec_nextField->data == '.'){
                 if(!isInBFSearchList(sec_nextField) && !isInVisitedList(sec_nextField)){
+                    sec_nextField->parent = currentField;
                     bfSearchList.push_back(sec_nextField);
                 }
             }
         }
     }
 
-    // if i can jump in dir_120 add this field to the bfSearchList
+    // if i can jump in dir_300 add this field to the bfSearchList
     if(currentField->dir_300 != 0){
         nextField = currentField->dir_300;
         if(currentField->dir_300->dir_300 != 0){
@@ -388,12 +391,13 @@ void SearchAlgorithm::tryToJump(Field *currentField)
             // if i can jump in this direction add the sec_nextField to the bfSearchList
             if(nextField->data != '.' && sec_nextField->data == '.'){
                 if(!isInBFSearchList(sec_nextField) && !isInVisitedList(sec_nextField)){
+                    sec_nextField->parent = currentField;
                     bfSearchList.push_back(sec_nextField);
                 }
             }
         }
     }
-    bfSearchList.sort(bfSearchQuickSortCompareFunction);
+    //bfSearchList.sort(bfSearchQuickSortCompareFunction);
 }
 
 
@@ -414,16 +418,6 @@ void SearchAlgorithm::setStartAndGoal(){
     // clear all lists
     inizializeLists();
 
-    // inizialize all g values
-    Iterator iterator(gameBoard);
-    iterator.resetToFirst();
-    while(iterator.getCurrentField() != gameBoard.getLast()){
-        iterator.current->g = 100;
-        ++iterator;
-    }
-    iterator.current->g = 100;
-
-
     startHeuristicsCircular();
 
     //inizialise start field
@@ -442,29 +436,28 @@ void SearchAlgorithm::inizializeLists(){
 
     //cout << "inizialize lists ....." << endl;
 
-    // delete every node from the openlist and clear the list
-    //    for(unsigned int i = 0; i < openList.size(); i++){
-    //        delete openList[i];
-    //    }
     openList.clear();
-
-    // delete every node from the visitedList and clear the list
-    //    for(unsigned int i = 0; i < visitedList.size(); i++){
-    //        delete visitedList[i];
-    //    }
     visitedList.clear();
-
-    // delete every node from the shortestPath - list and clear the list
-    //    for(unsigned int i = 0; i < shortestPath.size(); i++){
-    //        delete shortestPath[i];
-    //    }
     shortestPath.clear();
     bfSearchList.clear();
-    Iterator listIterator(gameBoard);
-    for(listIterator.resetToFirst(); listIterator.getCurrentField() != gameBoard.getLast(); ++listIterator){
-        listIterator.getCurrentField()->parent = 0;
+    m_BFstartField = 0;
 
+    // inizialize all g values
+    Iterator iterator(gameBoard);
+    iterator.resetToFirst();
+    while(iterator.getCurrentField() != gameBoard.getLast()){
+        iterator.current->g = 100;
+        ++iterator;
     }
+    iterator.current->g = 100;
+
+    // inizialize all parent pointer to NULL
+    iterator.resetToFirst();
+    while(iterator.getCurrentField() != gameBoard.getLast()){
+        iterator.current->parent = 0;
+        ++iterator;
+    }
+    iterator.current->parent = 0;
 
     //cout << "lists inizialized ...OK" << endl;
 }
@@ -474,7 +467,7 @@ Field *SearchAlgorithm::getNextBestField()
 {
 
     // first controll if the open list is empty...search finished!!!!!!
-    if(openList.empty()){
+        if(openList.empty()){
         cout << " -----> end of search! NO possibility left" << endl << endl;
 
         //cout << "GoalField = " << goal->number << endl;
@@ -779,6 +772,7 @@ Field* SearchAlgorithm::findPath(){
         searchStep();
     }
 
+    // just use the first step of the hole path as solution for one turn (jumps included)
     if(!shortestPath.empty()){
         list<Field*>::iterator it = shortestPath.begin();
         it++;

@@ -1,4 +1,4 @@
-#include "searchalgorithm.h"
+    #include "searchalgorithm.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
@@ -524,7 +524,7 @@ void SearchAlgorithm::searchStep()
         }
 
         //cout << "GoalField = " << goal->number << endl;
-        cout << "Found path : ";
+        cout << "\tFound path : ";
         list<Field*>::iterator it;
         for(it = shortestPath.begin(); it != shortestPath.end(); it++){
             cout << **it << "->" ;

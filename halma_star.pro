@@ -20,3 +20,5 @@ HEADERS += \
     gameengine.h \
     playerengine.h
 
+RESOURCES +=
+

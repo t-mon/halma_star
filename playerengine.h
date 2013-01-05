@@ -6,6 +6,7 @@
 struct move{
     Field* from;
     Field* to;
+    int groupDistance;
 };
 
 class PlayerEngine
@@ -21,6 +22,8 @@ private:
     Field* m_goalField;
     Board &m_board;
     char m_playerSymbole;
+
+    int m_groupDistance;
 
     Field* setGoalField(Board &gameBoard);
 

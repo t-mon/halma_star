@@ -805,9 +805,7 @@ void SearchAlgorithm::setRandomStones(int max_stones ){
             }
             ++it;
         }
-
     }
-
 }
 
 

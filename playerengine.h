@@ -14,7 +14,7 @@ class PlayerEngine
 public:
     PlayerEngine(Board &board, char playerSymbol = 'x');
     void initFigures();
-    void doTurnMove();
+    bool doTurnMove();
 
     static bool moveCompare(move a, move b);
 

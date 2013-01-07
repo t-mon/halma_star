@@ -1,6 +1,17 @@
 #ifndef SEARCHALGORITHM_H
 #define SEARCHALGORITHM_H
 
+/*OVERVIEW OF PATHSEARCHING
+  findPath -> called from playerEngine and returns the first step (makable move in one round) of the found path
+    searchStep() -> until goalField reached
+        getNextBestField()
+            make a*
+                if i can jump make BF Search
+    -> cout the shortest path
+    return the first step of the path (makable move in one round)
+*/
+
+
 /* http://www.policyalmanac.org/games/aStarTutorial_de.html
  * Prinzipieller Ablauf des A* Algorithmus
  *   1) Fuege das Startquadrat der offenen Liste hinzu.

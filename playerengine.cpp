@@ -40,7 +40,7 @@ void PlayerEngine::initFigures(){
 
 }
 
-void PlayerEngine::doTurnMove()
+bool PlayerEngine::doTurnMove()
 {
     resultsList.clear();
     m_groupDistance = 0;
@@ -127,6 +127,11 @@ void PlayerEngine::doTurnMove()
     //now make the best move
     resultsList.sort(moveCompare);
 
+    if(resultsList.empty()){
+        cout << "ERROR: Game over, list of possible moves is empty, the goalfield is not reachable :(" << endl;
+        return false;
+    }
+
     // print the resultlist for controll
     cout << "List of best moves for each figure an the groupdistance" << endl;
     for(list<move>::iterator listit = resultsList.begin(); listit != resultsList.end(); listit++){
@@ -148,6 +153,7 @@ void PlayerEngine::doTurnMove()
 
     cout << endl << endl << "best move for player "<< m_playerSymbole << ": MOVE FROM "<< moveToMake.from->getNumber() << " -> " << moveToMake.to->getNumber() << "\t\t for goalField: " << *m_goalField << endl;
     m_board.print();
+    return true;
 }
 
 bool PlayerEngine::moveCompare(move a, move b)
@@ -158,7 +164,7 @@ bool PlayerEngine::moveCompare(move a, move b)
 Field *PlayerEngine::setGoalField(Board &gameBoard)
 {
     if(m_playerSymbole == 'x'){
-        // look in the triangle for a free goalField
+        // look in the triangle for a free and reachable goalField
         Iterator it(gameBoard);
         it.resetToLast();
         for(int i = 0; i <= 10; i++){
@@ -176,7 +182,7 @@ Field *PlayerEngine::setGoalField(Board &gameBoard)
         return it.getCurrentField();
     }
     if(m_playerSymbole == 'o'){
-        // look in the triangle for a free goalField
+        // look in the triangle for a free and reachable goalField
         Iterator it(gameBoard);
         it.resetToFirst();
         for(int i = 0; i <= 10; i++){

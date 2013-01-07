@@ -24,14 +24,23 @@ GameEngine::GameEngine()
     cout << "player two init" << endl;
     playerTwo->initFigures();
     gameBoard.print();
+
+    bool gameStillOn = true;
     while(1){
         cout << endl << endl << "================================================================================" << endl;
         char a;
         cin >> a;
-        playerOne->doTurnMove();
+        gameStillOn=playerOne->doTurnMove();
+        if(gameStillOn == false){
+            cout << "================\n    GAME OVER     \n================" << endl;
+            break;
+        }
         cout << endl << endl << "================================================================================" << endl;
         cin >> a;
-        playerTwo->doTurnMove();
-
+        gameStillOn=playerTwo->doTurnMove();
+        if(gameStillOn == false){
+            cout << "================\n    GAME OVER     \n================" << endl;
+            break;
+        }
     }
 }

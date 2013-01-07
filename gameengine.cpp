@@ -15,14 +15,24 @@ GameEngine::GameEngine()
     Board gameBoard = pareser.parse();
 
     PlayerEngine* playerOne = new PlayerEngine(gameBoard,'x');
+    PlayerEngine* playerTwo = new PlayerEngine(gameBoard,'o');
+
 
     cout << "player one init" << endl;
     playerOne->initFigures();
     gameBoard.print();
+
+    cout << "player two init" << endl;
+    playerTwo->initFigures();
+    gameBoard.print();
     while(1){
-        playerOne->doTurnMove();
-        //playerZwo->doTurnMove();
+        cout << endl << endl << "================================================================================" << endl;
         char a;
         cin >> a;
+        playerOne->doTurnMove();
+        cout << endl << endl << "================================================================================" << endl;
+        cin >> a;
+        playerTwo->doTurnMove();
+
     }
 }

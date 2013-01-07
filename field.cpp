@@ -37,6 +37,16 @@ double Field::getF(){
     return g+h;
 }
 
+int Field::getH()
+{
+    return h;
+}
+
+int Field::getG()
+{
+    return g;
+}
+
 int Field::getNumber()
 {
     return number;

@@ -23,6 +23,8 @@ public:
     // the constructor of a field (by default all neighbors are 0 and the fieldnumber is 0)
     Field(int numField = 0, char dataOfField = '.', Field* previousField = 0, Field* nextField = 0, Field* dir_0_Field = 0, Field* dir_60_Field = 0, Field* dir_120_Field = 0, Field* dir_180_Field = 0, Field* dir_240_Field = 0, Field* dir_300_Field = 0);
     double getF();
+    int getH();
+    int getG();
     int getNumber();
 
 private:

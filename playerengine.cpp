@@ -63,6 +63,7 @@ void PlayerEngine::doTurnMove()
     for(it.resetToFirst(); it.getCurrentField() != m_board.getLast(); ++it){
         if(it.getCurrentData() == m_playerSymbole){
             setGoalField(m_board);
+            cout << "goal field:" << *m_goalField;
             // search the best move for this figure
             SearchAlgorithm search(m_board,it.getCurrentField(),m_goalField);
             cout << endl << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << endl;
@@ -117,7 +118,7 @@ void PlayerEngine::doTurnMove()
                 // now push the move to the result lists and sort it
                 resultsList.sort(moveCompare);
                 resultsList.push_back(solution_move);
-
+                cout << "undo the move" << endl;
                 cout << "\tgroup distance for this move: " << m_groupDistance << endl << endl;
                 m_groupDistance = 0;
             }

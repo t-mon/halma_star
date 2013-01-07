@@ -20,7 +20,6 @@ GameEngine::GameEngine()
 
     cout << "player one init" << endl;
     playerOne->initFigures();
-    gameBoard.print();
 
     cout << "player two init" << endl;
     playerTwo->initFigures();

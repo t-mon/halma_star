@@ -536,10 +536,11 @@ void SearchAlgorithm::searchStep()
 
 
 
-    // remove it from the openlist
     if(openList.empty()){
         return;
     }
+    // remove it from the openlist
+
     openList.pop_back();
 
     // add it to the visited list

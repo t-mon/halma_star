@@ -28,15 +28,15 @@ GameEngine::GameEngine()
     bool gameStillOn = true;
     while(1){
         cout << endl << endl << "================================================================================" << endl;
-        char a;
-        cin >> a;
+        //char a;
+        //cin >> a;
         gameStillOn=playerOne->doTurnMove();
         if(gameStillOn == false){
             cout << "================\n    GAME OVER     \n================" << endl;
             break;
         }
         cout << endl << endl << "================================================================================" << endl;
-        cin >> a;
+        //cin >> a;
         gameStillOn=playerTwo->doTurnMove();
         if(gameStillOn == false){
             cout << "================\n    GAME OVER     \n================" << endl;

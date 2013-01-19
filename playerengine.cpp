@@ -63,10 +63,10 @@ bool PlayerEngine::doTurnMove()
     for(it.resetToFirst(); it.getCurrentField() != m_board.getLast(); ++it){
         if(it.getCurrentData() == m_playerSymbole){
             setGoalField(m_board);
-            cout << "goal field:" << *m_goalField;
+            cout << endl << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << endl;
+            cout << "goal field:" << *m_goalField << endl;
             // search the best move for this figure
             SearchAlgorithm search(m_board,it.getCurrentField(),m_goalField);
-            cout << endl << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << endl;
             cout << "Search for Field " << it.getCurrentNumber();
             Field* currentSolution = search.findPath();
             // if we have a solution for this field
@@ -89,6 +89,8 @@ bool PlayerEngine::doTurnMove()
 
                 cout << endl << "******************************************* do the move and check the groupdistance" << endl;
                 // and check every distance for every figure
+
+                int countPossibleMoves = 0;
                 for(it2.resetToFirst(); it2.getCurrentField() != m_board.getLast(); ++it2){
                     if(it2.getCurrentData() == m_playerSymbole){
                         setGoalField(m_board);
@@ -96,11 +98,13 @@ bool PlayerEngine::doTurnMove()
                         cout << "Search for Field " << it2.getCurrentNumber();
                         Field* middleSolution = searchDeep.findPath();
                         if(middleSolution != 0){
+                            countPossibleMoves++;
                             m_groupDistance = m_groupDistance + middleSolution->getH();
                         }
                     }
                 }
 
+                //m_groupDistance = m_groupDistance/countPossibleMoves;
                 // undo move
                 Iterator it3(m_board);
                 it3.resetToFirst();
@@ -119,7 +123,7 @@ bool PlayerEngine::doTurnMove()
                 resultsList.sort(moveCompare);
                 resultsList.push_back(solution_move);
                 cout << "undo the move" << endl;
-                cout << "\tgroup distance for this move: " << m_groupDistance << endl << endl;
+                cout << "\tgroup distance for this move: " << m_groupDistance << " | checked for: " << countPossibleMoves << " moves " << endl << endl;
                 m_groupDistance = 0;
             }
         }
@@ -169,8 +173,10 @@ Field *PlayerEngine::setGoalField(Board &gameBoard)
         it.resetToLast();
         for(int i = 0; i <= 10; i++){
             if(it.getCurrentData() == '.'){
-                m_goalField = it.getCurrentField();
-                return it.getCurrentField();
+                if(isPotentialGoalField(it.getCurrentField())){
+                    m_goalField = it.getCurrentField();
+                    return it.getCurrentField();
+                }
             }
             --it;
         }
@@ -178,8 +184,10 @@ Field *PlayerEngine::setGoalField(Board &gameBoard)
         while(it.getCurrentNumber() != 104){
             --it;
         }
-        m_goalField = it.getCurrentField();
-        return it.getCurrentField();
+        if(isPotentialGoalField(it.getCurrentField())){
+            m_goalField = it.getCurrentField();
+            return it.getCurrentField();
+        }
     }
     if(m_playerSymbole == 'o'){
         // look in the triangle for a free and reachable goalField
@@ -187,8 +195,10 @@ Field *PlayerEngine::setGoalField(Board &gameBoard)
         it.resetToFirst();
         for(int i = 0; i <= 10; i++){
             if(it.getCurrentData() == '.'){
-                m_goalField = it.getCurrentField();
-                return it.getCurrentField();
+                if(isPotentialGoalField(it.getCurrentField())){
+                    m_goalField = it.getCurrentField();
+                    return it.getCurrentField();
+                }
             }
             ++it;
         }
@@ -196,8 +206,82 @@ Field *PlayerEngine::setGoalField(Board &gameBoard)
         while(it.getCurrentNumber() != 17){
             ++it;
         }
-        m_goalField = it.getCurrentField();
-        return it.getCurrentField();
+        if(isPotentialGoalField(it.getCurrentField())){
+            m_goalField = it.getCurrentField();
+            return it.getCurrentField();
+        }
     }
+
+}
+
+bool PlayerEngine::isPotentialGoalField(Field *currentField)
+{
+
+    if(currentField->dir_0 != 0){
+        if(currentField->dir_0->getData() == '.'){
+            return true;
+        }
+        if(currentField->dir_0->dir_0 != 0){
+            if(currentField->dir_0->dir_0->getData() == '.'){
+                return true;
+            }
+        }
+    }
+
+    if(currentField->dir_60 != 0){
+        if(currentField->dir_60->getData() == '.'){
+            return true;
+        }
+        if(currentField->dir_60->dir_60 != 0){
+            if(currentField->dir_60->dir_60->getData() == '.'){
+                return true;
+            }
+        }
+    }
+
+    if(currentField->dir_120 != 0){
+        if(currentField->dir_120->getData() == '.'){
+            return true;
+        }
+        if(currentField->dir_120->dir_120 != 0){
+            if(currentField->dir_120->dir_120->getData() == '.'){
+                return true;
+            }
+        }
+    }
+
+    if(currentField->dir_180 != 0){
+        if(currentField->dir_180->getData() == '.'){
+            return true;
+        }
+        if(currentField->dir_180->dir_180 != 0){
+            if(currentField->dir_180->dir_180->getData() == '.'){
+                return true;
+            }
+        }
+    }
+
+    if(currentField->dir_240 != 0){
+        if(currentField->dir_240->getData() == '.'){
+            return true;
+        }
+        if(currentField->dir_240->dir_240 != 0){
+            if(currentField->dir_240->dir_240->getData() == '.'){
+                return true;
+            }
+        }
+    }
+
+    if(currentField->dir_300 != 0){
+        if(currentField->dir_300->getData() == '.'){
+            return true;
+        }
+        if(currentField->dir_300->dir_300 != 0){
+            if(currentField->dir_300->dir_300->getData() == '.'){
+                return true;
+            }
+        }
+    }
+    return false;
 
 }

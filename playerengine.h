@@ -26,6 +26,7 @@ private:
     int m_groupDistance;
 
     Field* setGoalField(Board &gameBoard);
+    bool isPotentialGoalField(Field* currentField);
 
     list <move> resultsList;
 

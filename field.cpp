@@ -52,3 +52,8 @@ int Field::getNumber()
     return number;
 }
 
+char Field::getData()
+{
+    return data;
+}
+

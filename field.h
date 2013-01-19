@@ -26,6 +26,15 @@ public:
     int getH();
     int getG();
     int getNumber();
+    char getData();
+
+    // neighbors of this field
+    Field *dir_0;       // the field in the 0 direction
+    Field *dir_60;      // the field in the 60 direction
+    Field *dir_120;     // the field in the 120 direction
+    Field *dir_180;     // the field in the 180 direction
+    Field *dir_240;     // the field in the 240 direction
+    Field *dir_300;     // the field in the 300 direction
 
 private:
     // data from this field
@@ -43,13 +52,7 @@ private:
     Field* parent;          // the parent field in the search tree
     Field* child;           // the child field in the search tree
 
-    // neighbors of this field
-    Field *dir_0;       // the field in the 0 direction
-    Field *dir_60;      // the field in the 60 direction
-    Field *dir_120;     // the field in the 120 direction
-    Field *dir_180;     // the field in the 180 direction
-    Field *dir_240;     // the field in the 240 direction
-    Field *dir_300;     // the field in the 300 direction
+
 
 };
 

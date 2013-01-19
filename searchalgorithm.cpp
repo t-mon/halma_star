@@ -1,4 +1,4 @@
-    #include "searchalgorithm.h"
+#include "searchalgorithm.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
@@ -266,9 +266,10 @@ bool SearchAlgorithm::stepBFSearch(Field *currentField)
         openList.push_back(bestOfBfSearch);
 
         // move the other fields to the visited list
-        for(list<Field*>::iterator listIterator = bfSearchList.begin(); listIterator != bfSearchList.end(); ++listIterator){
-            visitedList.push_back(*listIterator);
-        }
+        std::copy(bfSearchList.begin(),bfSearchList.end(),std::back_inserter(visitedList));
+//        for(list<Field*>::iterator listIterator = bfSearchList.begin(); listIterator != bfSearchList.end(); ++listIterator){
+//            visitedList.push_back(*listIterator);
+//        }
 
         return true;
     }
@@ -278,7 +279,7 @@ bool SearchAlgorithm::stepBFSearch(Field *currentField)
 
         // the parent of this neighbour is the current field
         currentField->parent = m_BFstartField;
-        currentField->g = steps;
+        currentField->g = m_BFstartField->getG();
         openList.push_back(currentField);
         return true;
     }

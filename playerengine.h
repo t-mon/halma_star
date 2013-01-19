@@ -6,7 +6,7 @@
 struct move{
     Field* from;
     Field* to;
-    int groupDistance;
+    float groupDistance;
 };
 
 class PlayerEngine
@@ -23,7 +23,7 @@ private:
     Board &m_board;
     char m_playerSymbole;
 
-    int m_groupDistance;
+    float m_groupDistance;
 
     Field* setGoalField(Board &gameBoard);
     bool isPotentialGoalField(Field* currentField);

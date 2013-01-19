@@ -104,7 +104,8 @@ bool PlayerEngine::doTurnMove()
                     }
                 }
 
-                //m_groupDistance = m_groupDistance/countPossibleMoves;
+                // make the average to prevent that if a theoretical move has just 6 moves and a other 9
+                m_groupDistance = m_groupDistance/countPossibleMoves;
                 // undo move
                 Iterator it3(m_board);
                 it3.resetToFirst();
